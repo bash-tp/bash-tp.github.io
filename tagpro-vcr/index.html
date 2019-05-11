@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>TagPro VCR</title>
+
+	<link rel="stylesheet" href="vendor/spectre.min.css">
+	<link rel="stylesheet" href="vendor/spectre-icons.min.css">
+
+	<script>
+		window.tagpro = {
+			_readyCallbacks: [],
+			ready(e) {
+				this._readyCallbacks.push(e);
+			}
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			window.tagpro._readyCallbacks.forEach(function (e) { e() });
+		});
+	</script>
+</head>
+
+<body>
+	<div id="root"></div>
+
+	<script type="text/javascript" src="vendors~main.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>
