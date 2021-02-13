@@ -195,8 +195,27 @@
 		<input id="chat" maxlength="70" autocomplete="off">
 
 		<div id="assets">
+			<img id="egg" src="./vendor/egg/egg.png" class="asset">
+			<img id="raptor1" src="./vendor/egg/raptor1.png" class="asset">
+			<img id="raptor2" src="./vendor/egg/raptor2.png" class="asset">
+			<img id="raptor3" src="./vendor/egg/raptor3.png" class="asset">
+			<img id="raptor4" src="./vendor/egg/raptor4.png" class="asset">
+			<img id="raptor5" src="./vendor/egg/raptor5.png" class="asset">
+			<img id="raptor6" src="./vendor/egg/raptor6.png" class="asset">
+			<img id="raptor7" src="./vendor/egg/raptor7.png" class="asset">
+			<img id="raptor8" src="./vendor/egg/raptor8.png" class="asset">
+			<img id="raptor9" src="./vendor/egg/raptor9.png" class="asset">
+			<img id="raptor10" src="./vendor/egg/raptor10.png" class="asset">
+			<img id="raptor11" src="./vendor/egg/raptor11.png" class="asset">
+			<img id="raptor12" src="./vendor/egg/raptor12.png" class="asset">
+			<img id="raptor13" src="./vendor/egg/raptor13.png" class="asset">
+			<img id="raptor14" src="./vendor/egg/raptor14.png" class="asset">
+			<img id="raptor15" src="./vendor/egg/raptor15.png" class="asset">
+			<img id="raptor16" src="./vendor/egg/raptor16.png" class="asset">
+			<img id="raptor17" src="./vendor/egg/raptor17.png" class="asset">
+			<img id="field" src="./vendor/egg/field.png" class="asset">
 			<img id="tiles" src="./vendor/textures/musclescupgradients/tiles.png" class="asset">
-			<img id="splats" src="./vendor/textures/musclescupgradients/splats.png" class="asset">
+                        <img id="splats" src="./vendor/egg/splats.png" class="asset">
 			<img id="flair" src="./vendor/images/flair.png" class="asset">
 			<img id="speedpad" src="./vendor/textures/musclescupgradients/speedpad.png" class="asset">
 			<img id="speedpadred" src="./vendor/textures/musclescupgradients/speedpadred.png" class="asset">
@@ -300,6 +319,11 @@
 			<audio id="overtime" preload="auto">
 				<source src="./vendor/sounds/overtime.mp3" type="audio/mp3">
 			</audio>
+			<audio id="throw" preload="auto">
+				<source src="./vendor/egg/throw.mp3" type="audio/mp3">
+				<source src="./vendor/egg/throw.m4a" type="audio/m4a">
+				<source src="./vendor/egg/throw.ogg" type="audio/ogg">
+			</audio>
 		</div>
 	</div>
 
@@ -312,6 +336,7 @@
 	</div>
 
 	<script src="./vendor/compact/global-game.js"></script>
+	<script src="./vendor/egg/egg.js"></script>
 	<script>
 		tagpro.ready(function() {
 			tagproConfig.serverHost = "#";

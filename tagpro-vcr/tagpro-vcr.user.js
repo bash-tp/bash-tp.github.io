@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name          TagPro VCR
 // @description   Record TagPro socket data
-// @version       0.1.0
-// @author        Kera
-// @icon          https://keratagpro.github.io/tagpro-vcr/images/vhs.png
-// @namespace     https://github.com/keratagpro/
-// @downloadUrl   https://keratagpro.github.io/tagpro-vcr/tagpro-vcr.user.js
-// @updateUrl     https://keratagpro.github.io/tagpro-vcr/tagpro-vcr.meta.js
-// @include       http://tagpro-*.koalabeast.com:*
-// @include       http://tagpro-*.koalabeast.com/*
+// @version       0.2.0
+// @author        Kera, bash#
+// @icon          https://bash-tp.github.io/tagpro-vcr/images/vhs.png
+// @namespace     https://github.com/bash-tp/
+// @downloadUrl   https://bash-tp.github.io/tagpro-vcr/tagpro-vcr.user.js
+// @updateUrl     https://bash-tp.github.io/tagpro-vcr/tagpro-vcr.meta.js
+// @match         *://*.koalabeast.com/*
+// @match         *://*.jukejuice.com/*
+// @match         *://*.newcompte.fr/*
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @grant         GM_listValues
@@ -53,13 +54,40 @@
 	function addLinkToVcr() {
 	    const li = document.createElement('li');
 	    const link = document.createElement('a');
-	    link.href = 'https://keratagpro.github.io/tagpro-vcr/';
+	    link.href = 'https://bash-tp.github.io/tagpro-vcr/';
 	    link.target = '_blank';
 	    link.innerText = 'VCR';
 	    li.appendChild(link);
 	    const nav = document.querySelector('#site-nav > ul');
 	    nav.appendChild(li);
 	}
+
+	// Copied from https://stackoverflow.com/a/48254637
+
+	function stringify(obj) {
+		const cache = new Set();
+
+		return JSON.stringify(obj, function (key, value) {
+			if (typeof value === 'object' && value !== null) {
+				if (cache.has(value)) {
+					// Circular reference found
+					try {
+						// If this value does not reference a parent it can be deduped
+						return JSON.parse(JSON.stringify(value));
+					}
+					catch (err) {
+						// discard key if value cannot be deduped
+						return;
+					}
+				}
+				// Store value in our set
+				cache.add(value);
+			}
+			return value;
+	        });
+	}
+
+	// ---
 
 	class BasicRecorder {
 	    constructor() {
@@ -72,7 +100,8 @@
 	            this.firstPacketTime = time;
 	        }
 	        // NOTE: Have to stringify, since the TagPro game modifies the packets and adds circular references.
-	        this.packets.push(JSON.stringify([time - this.firstPacketTime, type, ...args]));
+	        const packet = stringify([time - this.firstPacketTime, type, ...args]);
+	        this.packets.push(packet);
 	    }
 	    end() {
 	        return Promise.resolve(this.packets.join('\n'));
