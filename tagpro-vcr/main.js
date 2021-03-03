@@ -4,12 +4,13 @@
 /******/ 		var chunkIds = data[0];
 /******/ 		var moreModules = data[1];
 /******/ 		var executeModules = data[2];
+/******/
 /******/ 		// add "moreModules" to the modules object,
 /******/ 		// then flag all "chunkIds" as loaded and fire callback
 /******/ 		var moduleId, chunkId, i = 0, resolves = [];
 /******/ 		for(;i < chunkIds.length; i++) {
 /******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId]) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 				resolves.push(installedChunks[chunkId][0]);
 /******/ 			}
 /******/ 			installedChunks[chunkId] = 0;
@@ -20,6 +21,7 @@
 /******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/
 /******/ 		while(resolves.length) {
 /******/ 			resolves.shift()();
 /******/ 		}
@@ -44,6 +46,7 @@
 /******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
 /******/ 			}
 /******/ 		}
+/******/
 /******/ 		return result;
 /******/ 	}
 /******/
@@ -93,17 +96,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -137,14 +155,28 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/css-loader/index.js!./src/components/App.css":
-/*!**********************************************************!*\
-  !*** ./node_modules/css-loader!./src/components/App.css ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/components/App.css":
+/*!**********************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/components/App.css ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ \"./node_modules/css-loader/lib/css-base.js\")(false);\n// imports\n\n\n// module\nexports.push([module.i, \".game-frame {\\n\\twidth: 100%;\\n\\tmin-width: 1280px;\\n\\tmin-height: 800px;\\n}\\n\\nhtml,\\nbody,\\n#root,\\n#container {\\n\\theight: 100%;\\n}\\n\\n#container {\\n\\tdisplay: flex;\\n\\tflex-direction: column;\\n}\\n\\n#file {\\n\\tdisplay: none;\\n}\\n\\n#header {\\n\\tpadding: 0.4rem;\\n\\twhite-space: nowrap;\\n}\\n\\n#game-container {\\n\\tmargin-top: 0.4rem;\\n\\tflex: 10;\\n\\toverflow: hidden;\\n}\\n\\n#game-frame {\\n\\twidth: 100%;\\n\\theight: 100%;\\n}\\n\", \"\"]);\n\n// exports\n\n\n//# sourceURL=webpack:///./src/components/App.css?./node_modules/css-loader");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default.a);
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, ".game-frame {\n\twidth: 100%;\n\tmin-width: 1280px;\n\tmin-height: 800px;\n}\n\nhtml,\nbody,\n#root,\n#container {\n\theight: 100%;\n}\n\n#container {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.panel {\n\theight: 98%;\n\tpadding-bottom: 0.4rem;\n}\n\n#file {\n\tdisplay: none;\n}\n\n#header {\n\tpadding: 0.4rem;\n\twhite-space: nowrap;\n}\n\n#game-container {\n\tmargin-top: 0.4rem;\n\tflex: 10;\n\toverflow: hidden;\n}\n\n#game-frame {\n\twidth: 100%;\n\theight: 100%;\n}\n", "",{"version":3,"sources":["webpack://./src/components/App.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,iBAAiB;CACjB,iBAAiB;AAClB;;AAEA;;;;CAIC,YAAY;AACb;;AAEA;CACC,aAAa;CACb,sBAAsB;AACvB;;AAEA;CACC,WAAW;CACX,sBAAsB;AACvB;;AAEA;CACC,aAAa;AACd;;AAEA;CACC,eAAe;CACf,mBAAmB;AACpB;;AAEA;CACC,kBAAkB;CAClB,QAAQ;CACR,gBAAgB;AACjB;;AAEA;CACC,WAAW;CACX,YAAY;AACb","sourcesContent":[".game-frame {\n\twidth: 100%;\n\tmin-width: 1280px;\n\tmin-height: 800px;\n}\n\nhtml,\nbody,\n#root,\n#container {\n\theight: 100%;\n}\n\n#container {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.panel {\n\theight: 98%;\n\tpadding-bottom: 0.4rem;\n}\n\n#file {\n\tdisplay: none;\n}\n\n#header {\n\tpadding: 0.4rem;\n\twhite-space: nowrap;\n}\n\n#game-container {\n\tmargin-top: 0.4rem;\n\tflex: 10;\n\toverflow: hidden;\n}\n\n#game-frame {\n\twidth: 100%;\n\theight: 100%;\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
 
 /***/ }),
 
@@ -152,10 +184,27 @@ eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-
 /*!********************************!*\
   !*** ./src/components/App.css ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("\nvar content = __webpack_require__(/*! !../../node_modules/css-loader!./App.css */ \"./node_modules/css-loader/index.js!./src/components/App.css\");\n\nif(typeof content === 'string') content = [[module.i, content, '']];\n\nvar transform;\nvar insertInto;\n\n\n\nvar options = {\"hmr\":true}\n\noptions.transform = transform\noptions.insertInto = undefined;\n\nvar update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ \"./node_modules/style-loader/lib/addStyles.js\")(content, options);\n\nif(content.locals) module.exports = content.locals;\n\nif(false) {}\n\n//# sourceURL=webpack:///./src/components/App.css?");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_App_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./App.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/App.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_App_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_App_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -167,7 +216,135 @@ eval("\nvar content = __webpack_require__(/*! !../../node_modules/css-loader!./A
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"App\", function() { return App; });\n/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ \"./node_modules/classnames/index.js\");\n/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ \"./node_modules/mobx-react/index.module.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-select */ \"./node_modules/react-select/dist/react-select.browser.esm.js\");\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! js-cookie */ \"./node_modules/js-cookie/src/js.cookie.js\");\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _utils_Textures__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/Textures */ \"./src/utils/Textures.ts\");\n/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./App.css */ \"./src/components/App.css\");\n/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_App_css__WEBPACK_IMPORTED_MODULE_6__);\nvar __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\n\n\n\n\n\n\n\nlet App = class App extends react__WEBPACK_IMPORTED_MODULE_2__[\"Component\"] {\n    constructor() {\n        super(...arguments);\n        this.handleTextureChange = selection => {\n            js_cookie__WEBPACK_IMPORTED_MODULE_4___default.a.set(\"textures\", selection.value);\n        };\n    }\n    renderGame() {\n        const { appState } = this.props;\n        let eggBall = appState.isEggBall();\n        let gameSrc = eggBall ? \"game-egg.html\" : \"game.html\";\n        return react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"iframe\", { id: \"game-frame\", src: gameSrc, frameBorder: \"0\" });\n    }\n    renderTextureSelect() {\n        const textures = _utils_Textures__WEBPACK_IMPORTED_MODULE_5__[\"getTextureList\"]();\n        let initial = { label: \"Muscle's Cup Gradients\" };\n        const cookie = js_cookie__WEBPACK_IMPORTED_MODULE_4___default.a.get(\"textures\");\n        if (cookie) {\n            const texture = JSON.parse(cookie);\n            const name = texture.name;\n            if (_utils_Textures__WEBPACK_IMPORTED_MODULE_5__[\"getTexture\"](name)) {\n                initial.label = name;\n            }\n        }\n        return react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](react_select__WEBPACK_IMPORTED_MODULE_3__[\"default\"], { defaultValue: initial, options: textures, onChange: this.handleTextureChange, menuPosition: \"fixed\" });\n    }\n    renderInfo() {\n        return (react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: \"container grid-sm panel\" },\n            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: \"panel-header\" },\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: \"panel-title h5\" }, \"TagPro VCR\")),\n            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: \"panel-body\" },\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"h6\", null, \"Usage\"),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"ol\", null,\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"li\", null,\n                        \"Install the userscript:\",\n                        ' ',\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"a\", { href: \"https://bash-tp.github.io/tagpro-vcr/tagpro-vcr.user.js\" }, \"tagpro-vcr.user.js\"),\n                        \".\"),\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"li\", null,\n                        \"Play a game of \",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"a\", { href: \"http://tagpro.gg\" }, \"TagPro\"),\n                        \".\"),\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"li\", null,\n                        \"Upload the recorded game here (\",\n                        this.renderUploadLabel(),\n                        \") and click\",\n                        ' ',\n                        this.renderStartButton(),\n                        \".\")),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"h6\", null, \"Notes\"),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"ul\", null,\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"li\", null,\n                        \"To test your TagPro userscripts here, add this @include:\",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"br\", null),\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"code\", null, \"// @include https://bash-tp.github.io/tagpro-vcr/game*.html\")),\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"li\", null,\n                        \"The game is running in \\\"spectator\\\"-mode, so you can press \",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"code\", null, \"C\"),\n                        \" to center the view,\",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"code\", null, \"+\"),\n                        \"/\",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"code\", null, \"-\"),\n                        \" to zoom in/out etc. (see \",\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"a\", { href: \"https://www.reddit.com/r/TagPro/wiki/gameplay#wiki_spectator\" }, \"wiki\"),\n                        \").\")),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"h6\", null, \"Texture Pack Selection\"),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"p\", null,\n                    \"See \",\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"a\", { href: \"https://tagpro.koalabeast.com/textures/\" }, \"game\"),\n                    \" for available texture packs.\"),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", null, this.renderTextureSelect()),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"p\", null))));\n    }\n    renderUploadLabel(label) {\n        return (react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"label\", { htmlFor: \"file\", className: \"btn btn-link\" },\n            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"i\", { className: \"icon icon-upload\" }),\n            \" \",\n            label || 'Upload recording'));\n    }\n    renderStartButton() {\n        const { appState } = this.props;\n        return (react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"button\", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('btn btn-success', {\n                disabled: appState.started || !appState.recording\n            }), onClick: appState.handleStart }, \"Start\"));\n    }\n    renderStopButton() {\n        const { appState } = this.props;\n        return (react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"button\", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('btn btn-error', { disabled: !appState.started }), onClick: appState.handleStop }, \"Stop\"));\n    }\n    render() {\n        const { appState } = this.props;\n        const fetchClasses = classnames__WEBPACK_IMPORTED_MODULE_0___default()('form-icon', 'icon', {\n            'loading': appState.fetching,\n            'icon-check': appState.recordingURL && !appState.fetching && appState.urlIsValid === true,\n            'icon-stop': appState.recordingURL && appState.urlIsValid === false\n        });\n        return (react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { id: \"container\" },\n            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"header\", { id: \"header\", className: \"navbar\" },\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"section\", { className: \"navbar-section\" },\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"span\", null, \"TagPro VCR\")),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"section\", { className: \"navbar-center\" },\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: \"form-horizontal\" },\n                        this.renderUploadLabel(appState.recordingName),\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"span\", null, \" or \"),\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('input-group input-inline', { 'has-icon-right': !!appState.recordingURL }) },\n                            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"input\", { className: \"form-input\", type: \"text\", value: appState.recordingURL, onChange: appState.handleUrlChange, placeholder: \"Fetch from URL (http://...)\" }),\n                            appState.recordingURL && react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"i\", { className: fetchClasses })),\n                        react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"input\", { id: \"file\", type: \"file\", accept: \".ndjson,.jsonl\", onChange: appState.handleFileSelect }),\n                        ' ',\n                        this.renderStartButton(),\n                        ' ',\n                        this.renderStopButton())),\n                react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"section\", { className: \"navbar-section\" },\n                    react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"a\", { href: \"https://github.com/bash-tp/tagpro-vcr\", className: \"btn\" }, \"GitHub\"))),\n            react__WEBPACK_IMPORTED_MODULE_2__[\"createElement\"](\"div\", { id: \"game-container\" }, appState.started ? this.renderGame() : this.renderInfo())));\n    }\n};\nApp = __decorate([\n    mobx_react__WEBPACK_IMPORTED_MODULE_1__[\"observer\"]\n], App);\n\n\n\n//# sourceURL=webpack:///./src/components/App.tsx?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "App", function() { return App; });
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/ProfileSettings */ "./src/utils/ProfileSettings.tsx");
+/* harmony import */ var _utils_Textures__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Textures */ "./src/utils/Textures.tsx");
+/* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./App.css */ "./src/components/App.css");
+
+
+
+
+
+
+const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class AppClass extends react__WEBPACK_IMPORTED_MODULE_2__["Component"] {
+    renderGame() {
+        const { appState } = this.props;
+        const eggBall = appState.isEggBall();
+        const gameSrc = eggBall ? "game-egg.html" : "game.html";
+        return react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("iframe", { id: "game-frame", src: gameSrc, frameBorder: "0" });
+    }
+    renderInfo() {
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "container grid-sm panel" },
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-header" },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-title h5" }, "TagPro VCR")),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-body" },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("h6", null, "Usage"),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("ol", null,
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null,
+                        "Install the userscript:",
+                        ' ',
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://bash-tp.github.io/tagpro-vcr/tagpro-vcr.user.js" }, "tagpro-vcr.user.js"),
+                        "."),
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null,
+                        "Play a game of ",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "http://tagpro.gg" }, "TagPro"),
+                        "."),
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null,
+                        "Upload the recorded game here (",
+                        this.renderUploadLabel(),
+                        ") and click",
+                        ' ',
+                        this.renderStartButton(),
+                        ".")),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("h6", null, "Notes"),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("ul", null,
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null,
+                        "To test your TagPro userscripts here, add this @include:",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("code", null, "// @include https://bash-tp.github.io/tagpro-vcr/game*.html")),
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null,
+                        "The game is running in \"spectator\"-mode, so you can press ",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("code", null, "C"),
+                        " to center the view,",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("code", null, "+"),
+                        "/",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("code", null, "-"),
+                        " to zoom in/out etc. (see ",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://www.reddit.com/r/TagPro/wiki/gameplay#wiki_spectator" }, "wiki"),
+                        ").")),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("h6", null, "Texture Pack Selection"),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", null,
+                    "See ",
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://tagpro.koalabeast.com/textures/" }, "game"),
+                    " for available texture packs."),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", null, _utils_Textures__WEBPACK_IMPORTED_MODULE_4__["renderTextureSelect"]()),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", null),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("h6", null, "Settings"),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "columns" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "column col-6" },
+                        _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__["renderProfileCheckbox"]('disableBallSpin', 'Enable Ball Spin', false),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
+                        _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__["renderProfileCheckbox"]('disableParticles', 'Enable Particle Effects', false),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
+                        _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__["renderProfileCheckbox"]('forceCanvasRenderer', 'Enable WebGL Rendering', false),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
+                        _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__["renderProfileCheckbox"]('disableViewportScaling', 'Enable Viewport Scaling', true)),
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "column col-6" },
+                        "Tile Respawn Warnings:",
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
+                        _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_3__["renderTileRespawnSelect"]())))));
+    }
+    renderUploadLabel(label) {
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("label", { htmlFor: "file", className: "btn btn-link" },
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("i", { className: "icon icon-upload" }),
+            " ",
+            label || 'Upload recording'));
+    }
+    renderStartButton() {
+        const { appState } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('btn btn-success', {
+                disabled: appState.started || !appState.recording
+            }), onClick: appState.handleStart }, "Start"));
+    }
+    renderStopButton() {
+        const { appState } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('btn btn-error', { disabled: !appState.started }), onClick: appState.handleStop }, "Stop"));
+    }
+    render() {
+        const { appState } = this.props;
+        const fetchClasses = classnames__WEBPACK_IMPORTED_MODULE_0___default()('form-icon', 'icon', {
+            'loading': appState.fetching,
+            'icon-check': appState.recordingURL && !appState.fetching && appState.urlIsValid === true,
+            'icon-stop': appState.recordingURL && appState.urlIsValid === false
+        });
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { id: "container" },
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("header", { id: "header", className: "navbar" },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("section", { className: "navbar-section" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", null, "TagPro VCR")),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("section", { className: "navbar-center" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "form-horizontal" },
+                        this.renderUploadLabel(appState.recordingName),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", null, " or "),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('input-group input-inline', { 'has-icon-right': !!appState.recordingURL }) },
+                            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { className: "form-input", type: "text", value: appState.recordingURL, onChange: appState.handleUrlChange, placeholder: "Fetch from URL (http://...)" }),
+                            appState.recordingURL && react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("i", { className: fetchClasses })),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { id: "file", type: "file", accept: ".ndjson,.jsonl", onChange: appState.handleFileSelect }),
+                        ' ',
+                        this.renderStartButton(),
+                        ' ',
+                        this.renderStopButton())),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("section", { className: "navbar-section" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://github.com/bash-tp/tagpro-vcr", className: "btn" }, "GitHub"))),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { id: "game-container" }, appState.started ? this.renderGame() : this.renderInfo())));
+    }
+});
+
 
 /***/ }),
 
@@ -179,7 +356,20 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ \"./src/components/App.tsx\");\n/* harmony import */ var _stores_AppState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stores/AppState */ \"./src/stores/AppState.ts\");\n\n\n\n\nconst appState = new _stores_AppState__WEBPACK_IMPORTED_MODULE_3__[\"AppState\"]();\nObject(react_dom__WEBPACK_IMPORTED_MODULE_1__[\"render\"])(react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_components_App__WEBPACK_IMPORTED_MODULE_2__[\"App\"], { appState: appState }), document.getElementById('root'));\n\n\n//# sourceURL=webpack:///./src/index.tsx?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./src/components/App.tsx");
+/* harmony import */ var _stores_AppState__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stores/AppState */ "./src/stores/AppState.ts");
+
+
+
+
+const appState = new _stores_AppState__WEBPACK_IMPORTED_MODULE_3__["AppState"]();
+Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["render"])(react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_App__WEBPACK_IMPORTED_MODULE_2__["App"], { appState: appState }), document.getElementById('root'));
+
 
 /***/ }),
 
@@ -191,7 +381,128 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var reac
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"AppState\", function() { return AppState; });\n/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ \"./node_modules/mobx/lib/mobx.module.js\");\n/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/EventedChannel */ \"./src/utils/EventedChannel.ts\");\nvar __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\n\n\nclass AppState {\n    constructor() {\n        this.recording = localStorage.getItem('recording');\n        this.recordingName = localStorage.getItem('recordingName');\n        this.recordingURL = '';\n        this.selectedFile = undefined;\n        this.started = false;\n        this.fetching = false;\n        this.urlIsValid = undefined;\n        const channel = (this.channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__[\"default\"]('vcr'));\n        channel.on('request-recording', () => {\n            channel.emit('recording', parseRecording(this.recording));\n        });\n        Object(mobx__WEBPACK_IMPORTED_MODULE_0__[\"reaction\"])(() => this.selectedFile, file => {\n            if (!file) {\n                this.recordingName = undefined;\n                this.recording = undefined;\n                return;\n            }\n            const reader = new FileReader();\n            reader.addEventListener('load', () => {\n                this.recordingName = file.name;\n                this.recording = reader.result;\n            });\n            reader.readAsText(file);\n        });\n        Object(mobx__WEBPACK_IMPORTED_MODULE_0__[\"reaction\"])(() => this.recordingURL, url => {\n            if (!this.recordingURL) {\n                return;\n            }\n            this.fetching = true;\n            fetch(url)\n                .then(r => {\n                if (!r.ok) {\n                    throw r;\n                }\n                else {\n                    return r.text();\n                }\n            })\n                .then(text => {\n                this.recording = text;\n                this.fetching = false;\n                this.urlIsValid = true;\n            })\n                .catch(err => {\n                this.recording = undefined;\n                this.fetching = false;\n                this.urlIsValid = false;\n            });\n        }, {\n            delay: 1000\n        });\n        Object(mobx__WEBPACK_IMPORTED_MODULE_0__[\"reaction\"])(() => this.recording, localStore(this, 'recording'));\n        Object(mobx__WEBPACK_IMPORTED_MODULE_0__[\"reaction\"])(() => this.recordingName, localStore(this, 'recordingName'));\n    }\n    isEggBall() {\n        return this.recording\n            .split('\\n')\n            .filter(l => l.match(/^\\[\\d+,\"eggBall\",/))\n            .length > 0;\n    }\n    handleFileSelect(ev) {\n        this.recordingURL = '';\n        this.selectedFile = ev.target.files[0];\n    }\n    handleUrlChange(ev) {\n        this.recordingURL = ev.target.value;\n        this.selectedFile = undefined;\n        this.urlIsValid = undefined;\n        this.fetching = false;\n    }\n    handleStart() {\n        if (!this.recording) {\n            return;\n        }\n        this.started = true;\n    }\n    handleStop() {\n        this.started = false;\n    }\n}\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"recording\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"recordingName\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"recordingURL\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"selectedFile\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"started\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"fetching\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"observable\"]\n], AppState.prototype, \"urlIsValid\", void 0);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"action\"].bound\n], AppState.prototype, \"handleFileSelect\", null);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"action\"].bound\n], AppState.prototype, \"handleUrlChange\", null);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"action\"].bound\n], AppState.prototype, \"handleStart\", null);\n__decorate([\n    mobx__WEBPACK_IMPORTED_MODULE_0__[\"action\"].bound\n], AppState.prototype, \"handleStop\", null);\nfunction parseRecording(data) {\n    return data\n        .split('\\n')\n        .filter(l => l.trim().length > 0)\n        .map(line => JSON.parse(line));\n}\nfunction localStore(target, key) {\n    return function () {\n        if (target[key]) {\n            // console.log('setting', key);\n            localStorage.setItem(key, String(target[key]));\n        }\n        else {\n            // console.log('removing', key);\n            localStorage.removeItem(key);\n        }\n    };\n}\n\n\n//# sourceURL=webpack:///./src/stores/AppState.ts?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppState", function() { return AppState; });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/EventedChannel */ "./src/utils/EventedChannel.ts");
+
+
+class AppState {
+    constructor() {
+        this.recording = localStorage.getItem('recording');
+        this.recordingName = localStorage.getItem('recordingName');
+        this.recordingURL = '';
+        this.selectedFile = undefined;
+        this.started = false;
+        this.fetching = false;
+        this.urlIsValid = undefined;
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["makeObservable"])(this, {
+            recording: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            recordingName: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            recordingURL: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            selectedFile: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            started: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            fetching: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            urlIsValid: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+            handleFileSelect: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
+            handleUrlChange: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
+            handleStart: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
+            handleStop: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound
+        });
+        const channel = (this.channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__["default"]('vcr'));
+        channel.on('request-recording', () => {
+            channel.emit('recording', parseRecording(this.recording));
+        });
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.selectedFile, file => {
+            if (!file) {
+                this.recordingName = undefined;
+                this.recording = undefined;
+                return;
+            }
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(() => {
+                    this.recordingName = file.name;
+                    this.recording = reader.result;
+                });
+            });
+            reader.readAsText(file);
+        });
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingURL, url => {
+            if (!this.recordingURL) {
+                return;
+            }
+            this.fetching = true;
+            fetch(url)
+                .then(r => {
+                if (!r.ok) {
+                    throw r;
+                }
+                else {
+                    return r.text();
+                }
+            })
+                .then(text => {
+                this.recording = text;
+                this.fetching = false;
+                this.urlIsValid = true;
+            })
+                .catch(err => {
+                this.recording = undefined;
+                this.fetching = false;
+                this.urlIsValid = false;
+            });
+        }, {
+            delay: 1000
+        });
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recording, localStore(this, 'recording'));
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingName, localStore(this, 'recordingName'));
+    }
+    isEggBall() {
+        return this.recording
+            .split('\n')
+            .filter(l => l.match(/^\[\d+,"eggBall",/))
+            .length > 0;
+    }
+    handleFileSelect(ev) {
+        this.recordingURL = '';
+        this.selectedFile = ev.target.files[0];
+    }
+    handleUrlChange(ev) {
+        this.recordingURL = ev.target.value;
+        this.selectedFile = undefined;
+        this.urlIsValid = undefined;
+        this.fetching = false;
+    }
+    handleStart() {
+        if (!this.recording) {
+            return;
+        }
+        this.started = true;
+    }
+    handleStop() {
+        this.started = false;
+    }
+}
+function parseRecording(data) {
+    return data
+        .split('\n')
+        .filter(l => l.trim().length > 0)
+        .map(line => JSON.parse(line));
+}
+function localStore(target, key) {
+    return function () {
+        if (target[key]) {
+            // console.log('setting', key);
+            localStorage.setItem(key, String(target[key]));
+        }
+        else {
+            // console.log('removing', key);
+            localStorage.removeItem(key);
+        }
+    };
+}
+
 
 /***/ }),
 
@@ -203,20 +514,591 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return EventedChannel; });\n/* harmony import */ var eventemitter3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! eventemitter3 */ \"./node_modules/eventemitter3/index.js\");\n/* harmony import */ var eventemitter3__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(eventemitter3__WEBPACK_IMPORTED_MODULE_0__);\n\nclass EventedChannel extends BroadcastChannel {\n    constructor(name) {\n        super(name);\n        const events = (this.events = new eventemitter3__WEBPACK_IMPORTED_MODULE_0___default.a());\n        this.addEventListener('message', ev => {\n            const [type, ...args] = ev.data;\n            events.emit(type, ...args);\n        });\n    }\n    on(event, listener) {\n        this.events.on(event, listener);\n    }\n    emit(type, data) {\n        this.postMessage([type, data]);\n    }\n}\n\n\n//# sourceURL=webpack:///./src/utils/EventedChannel.ts?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventedChannel; });
+/* harmony import */ var eventemitter3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! eventemitter3 */ "./node_modules/eventemitter3/index.js");
+/* harmony import */ var eventemitter3__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(eventemitter3__WEBPACK_IMPORTED_MODULE_0__);
+
+class EventedChannel extends BroadcastChannel {
+    constructor(name) {
+        super(name);
+        const events = (this.events = new eventemitter3__WEBPACK_IMPORTED_MODULE_0___default.a());
+        this.addEventListener('message', ev => {
+            const [type, ...args] = ev.data;
+            events.emit(type, ...args);
+        });
+    }
+    on(event, listener) {
+        this.events.on(event, listener);
+    }
+    emit(type, data) {
+        this.postMessage([type, data]);
+    }
+}
+
 
 /***/ }),
 
-/***/ "./src/utils/Textures.ts":
-/*!*******************************!*\
-  !*** ./src/utils/Textures.ts ***!
-  \*******************************/
-/*! exports provided: getTexture, getTextureList */
+/***/ "./src/utils/ProfileSettings.tsx":
+/*!***************************************!*\
+  !*** ./src/utils/ProfileSettings.tsx ***!
+  \***************************************/
+/*! exports provided: renderProfileCheckbox, renderTileRespawnSelect */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getTexture\", function() { return getTexture; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getTextureList\", function() { return getTextureList; });\nconst textures = {\n    \"Classic\": {\n        \"author\": \"LuckySpammer\",\n        \"name\": \"Classic\",\n        \"popularity\": 2921165341,\n        \"portal\": \"./vendor/textures/classic/portal.png\",\n        \"speedpad\": \"./vendor/textures/classic/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/classic/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/classic/speedpadred.png\",\n        \"splats\": \"./vendor/textures/classic/splats.png\",\n        \"tiles\": \"./vendor/textures/classic/tiles.png\",\n        \"url\": \"classic\"\n    },\n    \"Sniper Pack\": {\n        \"author\": \"DOKE\",\n        \"name\": \"Sniper Pack\",\n        \"popularity\": 1126558074,\n        \"portal\": \"./vendor/textures/sniperpack/portal.png\",\n        \"speedpad\": \"./vendor/textures/sniperpack/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/sniperpack/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/sniperpack/speedpadred.png\",\n        \"splats\": \"./vendor/textures/sniperpack/splats.png\",\n        \"tiles\": \"./vendor/textures/sniperpack/tiles.png\",\n        \"url\": \"sniperpack\"\n    },\n    \"Coral Light\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Coral Light\",\n        \"popularity\": 980595502,\n        \"portal\": \"./vendor/textures/corallight/portal.png\",\n        \"speedpad\": \"./vendor/textures/corallight/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/corallight/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/corallight/speedpadred.png\",\n        \"splats\": \"./vendor/textures/corallight/splats.png\",\n        \"tiles\": \"./vendor/textures/corallight/tiles.png\",\n        \"url\": \"corallight\"\n    },\n    \"Muscle's Cup Gradients\": {\n        \"author\": \"MuscleCups\",\n        \"name\": \"Muscle's Cup Gradients\",\n        \"popularity\": 923618899,\n        \"portal\": \"./vendor/textures/musclescupgradients/portal.png\",\n        \"speedpad\": \"./vendor/textures/musclescupgradients/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/musclescupgradients/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/musclescupgradients/speedpadred.png\",\n        \"splats\": \"./vendor/textures/musclescupgradients/splats.png\",\n        \"tiles\": \"./vendor/textures/musclescupgradients/tiles.png\",\n        \"url\": \"musclescupgradients\"\n    },\n    \"Muscle's Cup OG\": {\n        \"author\": \"MuscleCups\",\n        \"name\": \"Muscle's Cup OG\",\n        \"popularity\": 574009262,\n        \"portal\": \"./vendor/textures/musclescupog/portal.png\",\n        \"speedpad\": \"./vendor/textures/musclescupog/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/musclescupog/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/musclescupog/speedpadred.png\",\n        \"splats\": \"./vendor/textures/musclescupog/splats.png\",\n        \"tiles\": \"./vendor/textures/musclescupog/tiles.png\",\n        \"url\": \"musclescupog\"\n    },\n    \"Coral\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Coral\",\n        \"popularity\": 397846887,\n        \"portal\": \"./vendor/textures/coral/portal.png\",\n        \"speedpad\": \"./vendor/textures/coral/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/coral/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/coral/speedpadred.png\",\n        \"splats\": \"./vendor/textures/coral/splats.png\",\n        \"tiles\": \"./vendor/textures/coral/tiles.png\",\n        \"url\": \"coral\"\n    },\n    \"MTBad\": {\n        \"author\": \"mtbkr24\",\n        \"name\": \"MTBad\",\n        \"popularity\": 384471824,\n        \"portal\": \"./vendor/textures/mtbad/portal.png\",\n        \"speedpad\": \"./vendor/textures/mtbad/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/mtbad/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/mtbad/speedpadred.png\",\n        \"splats\": \"./vendor/textures/mtbad/splats.png\",\n        \"tiles\": \"./vendor/textures/mtbad/tiles.png\",\n        \"url\": \"mtbad\"\n    },\n    \"Flat\": {\n        \"author\": \"why\",\n        \"name\": \"Flat\",\n        \"popularity\": 364039388,\n        \"portal\": \"./vendor/textures/flat/portal.png\",\n        \"speedpad\": \"./vendor/textures/flat/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/flat/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/flat/speedpadred.png\",\n        \"splats\": \"./vendor/textures/flat/splats.png\",\n        \"tiles\": \"./vendor/textures/flat/tiles.png\",\n        \"url\": \"flat\"\n    },\n    \"MLTP Live\": {\n        \"author\": \"Ron Spawnson\",\n        \"name\": \"MLTP Live\",\n        \"popularity\": 268288375,\n        \"portal\": \"./vendor/textures/mltplive/portal.png\",\n        \"speedpad\": \"./vendor/textures/mltplive/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/mltplive/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/mltplive/speedpadred.png\",\n        \"splats\": \"./vendor/textures/mltplive/splats.png\",\n        \"tiles\": \"./vendor/textures/mltplive/tiles.png\",\n        \"url\": \"mltplive\"\n    },\n    \"Plumb\": {\n        \"author\": \"SuperTed\",\n        \"name\": \"Plumb\",\n        \"popularity\": 195240879,\n        \"portal\": \"./vendor/textures/plumb/portal.png\",\n        \"speedpad\": \"./vendor/textures/plumb/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/plumb/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/plumb/speedpadred.png\",\n        \"splats\": \"./vendor/textures/plumb/splats.png\",\n        \"tiles\": \"./vendor/textures/plumb/tiles.png\",\n        \"url\": \"plumb\"\n    },\n    \"Isometric\": {\n        \"author\": \"mtbkr24\",\n        \"name\": \"Isometric\",\n        \"popularity\": 183844878,\n        \"portal\": \"./vendor/textures/isometric/portal.png\",\n        \"speedpad\": \"./vendor/textures/isometric/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/isometric/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/isometric/speedpadred.png\",\n        \"splats\": \"./vendor/textures/isometric/splats.png\",\n        \"tiles\": \"./vendor/textures/isometric/tiles.png\",\n        \"url\": \"isometric\"\n    },\n    \"Plique\": {\n        \"author\": \"Despair\",\n        \"name\": \"Plique\",\n        \"popularity\": 167979698,\n        \"portal\": \"./vendor/textures/plique/portal.png\",\n        \"speedpad\": \"./vendor/textures/plique/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/plique/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/plique/speedpadred.png\",\n        \"splats\": \"./vendor/textures/plique/splats.png\",\n        \"tiles\": \"./vendor/textures/plique/tiles.png\",\n        \"url\": \"plique\"\n    },\n    \"CamsPP Light\": {\n        \"author\": \"Cam\",\n        \"name\": \"CamsPP Light\",\n        \"popularity\": 161206545,\n        \"portal\": \"./vendor/textures/camspplight/portal.png\",\n        \"speedpad\": \"./vendor/textures/camspplight/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/camspplight/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/camspplight/speedpadred.png\",\n        \"splats\": \"./vendor/textures/camspplight/splats.png\",\n        \"tiles\": \"./vendor/textures/camspplight/tiles.png\",\n        \"url\": \"camspplight\"\n    },\n    \"Sparkle\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Sparkle\",\n        \"popularity\": 157434127,\n        \"portal\": \"./vendor/textures/sparkle/portal.png\",\n        \"speedpad\": \"./vendor/textures/sparkle/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/sparkle/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/sparkle/speedpadred.png\",\n        \"splats\": \"./vendor/textures/sparkle/splats.png\",\n        \"tiles\": \"./vendor/textures/sparkle/tiles.png\",\n        \"url\": \"sparkle\"\n    },\n    \"24K\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"24K\",\n        \"popularity\": 151940555,\n        \"portal\": \"./vendor/textures/24k/portal.png\",\n        \"speedpad\": \"./vendor/textures/24k/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/24k/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/24k/speedpadred.png\",\n        \"splats\": \"./vendor/textures/24k/splats.png\",\n        \"tiles\": \"./vendor/textures/24k/tiles.png\",\n        \"url\": \"24k\"\n    },\n    \"CamsPP Old\": {\n        \"author\": \"Cam\",\n        \"name\": \"CamsPP Old\",\n        \"popularity\": 148573697,\n        \"portal\": \"./vendor/textures/camsppold/portal.png\",\n        \"speedpad\": \"./vendor/textures/camsppold/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/camsppold/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/camsppold/speedpadred.png\",\n        \"splats\": \"./vendor/textures/camsppold/splats.png\",\n        \"tiles\": \"./vendor/textures/camsppold/tiles.png\",\n        \"url\": \"camsppold\"\n    },\n    \"CMYK\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"CMYK\",\n        \"popularity\": 126742621,\n        \"portal\": \"./vendor/textures/cmyk/portal.png\",\n        \"speedpad\": \"./vendor/textures/cmyk/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/cmyk/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/cmyk/speedpadred.png\",\n        \"splats\": \"./vendor/textures/cmyk/splats.png\",\n        \"tiles\": \"./vendor/textures/cmyk/tiles.png\",\n        \"url\": \"cmyk\"\n    },\n    \"CamsPP Dark\": {\n        \"author\": \"Cam\",\n        \"name\": \"CamsPP Dark\",\n        \"popularity\": 120137217,\n        \"portal\": \"./vendor/textures/camsppdark/portal.png\",\n        \"speedpad\": \"./vendor/textures/camsppdark/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/camsppdark/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/camsppdark/speedpadred.png\",\n        \"splats\": \"./vendor/textures/camsppdark/splats.png\",\n        \"tiles\": \"./vendor/textures/camsppdark/tiles.png\",\n        \"url\": \"camsppdark\"\n    },\n    \"Precision Dark\": {\n        \"author\": \"Peach Fuzz\",\n        \"name\": \"Precision Dark\",\n        \"popularity\": 116594193,\n        \"portal\": \"./vendor/textures/precisiondark/portal.png\",\n        \"speedpad\": \"./vendor/textures/precisiondark/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/precisiondark/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/precisiondark/speedpadred.png\",\n        \"splats\": \"./vendor/textures/precisiondark/splats.png\",\n        \"tiles\": \"./vendor/textures/precisiondark/tiles.png\",\n        \"url\": \"precisiondark\"\n    },\n    \"PastelPro\": {\n        \"author\": \"SuperTed\",\n        \"name\": \"PastelPro\",\n        \"popularity\": 115963179,\n        \"portal\": \"./vendor/textures/pastelpro/portal.png\",\n        \"speedpad\": \"./vendor/textures/pastelpro/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/pastelpro/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/pastelpro/speedpadred.png\",\n        \"splats\": \"./vendor/textures/pastelpro/splats.png\",\n        \"tiles\": \"./vendor/textures/pastelpro/tiles.png\",\n        \"url\": \"pastelpro\"\n    },\n    \"Element+\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Element+\",\n        \"popularity\": 113423416,\n        \"portal\": \"./vendor/textures/element/portal.png\",\n        \"speedpad\": \"./vendor/textures/element/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/element/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/element/speedpadred.png\",\n        \"splats\": \"./vendor/textures/element/splats.png\",\n        \"tiles\": \"./vendor/textures/element/tiles.png\",\n        \"url\": \"element\"\n    },\n    \"Sketch+\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Sketch+\",\n        \"popularity\": 94563964,\n        \"portal\": \"./vendor/textures/sketch/portal.png\",\n        \"speedpad\": \"./vendor/textures/sketch/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/sketch/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/sketch/speedpadred.png\",\n        \"splats\": \"./vendor/textures/sketch/splats.png\",\n        \"tiles\": \"./vendor/textures/sketch/tiles.png\",\n        \"url\": \"sketch\"\n    },\n    \"Electric\": {\n        \"author\": \"Bug\",\n        \"name\": \"Electric\",\n        \"popularity\": 90140000,\n        \"portal\": \"./vendor/textures/electric/portal.png\",\n        \"speedpad\": \"./vendor/textures/electric/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/electric/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/electric/speedpadred.png\",\n        \"splats\": \"./vendor/textures/electric/splats.png\",\n        \"tiles\": \"./vendor/textures/electric/tiles.png\",\n        \"url\": \"electric\"\n    },\n    \"Sharp\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Sharp\",\n        \"popularity\": 84223773,\n        \"portal\": \"./vendor/textures/sharp/portal.png\",\n        \"speedpad\": \"./vendor/textures/sharp/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/sharp/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/sharp/speedpadred.png\",\n        \"splats\": \"./vendor/textures/sharp/splats.png\",\n        \"tiles\": \"./vendor/textures/sharp/tiles.png\",\n        \"url\": \"sharp\"\n    },\n    \"Mural\": {\n        \"author\": \"DaEvil1\",\n        \"name\": \"Mural\",\n        \"popularity\": 58661716,\n        \"portal\": \"./vendor/textures/mural/portal.png\",\n        \"speedpad\": \"./vendor/textures/mural/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/mural/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/mural/speedpadred.png\",\n        \"splats\": \"./vendor/textures/mural/splats.png\",\n        \"tiles\": \"./vendor/textures/mural/tiles.png\",\n        \"url\": \"mural\"\n    },\n    \"TerminalPX\": {\n        \"author\": \"pooppants\",\n        \"name\": \"TerminalPX\",\n        \"popularity\": 58605743,\n        \"portal\": \"./vendor/textures/terminalpx/portal.png\",\n        \"speedpad\": \"./vendor/textures/terminalpx/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/terminalpx/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/terminalpx/speedpadred.png\",\n        \"splats\": \"./vendor/textures/terminalpx/splats.png\",\n        \"tiles\": \"./vendor/textures/terminalpx/tiles.png\",\n        \"url\": \"terminalpx\"\n    },\n    \"Supreme\": {\n        \"author\": \"bicycle\",\n        \"name\": \"Supreme\",\n        \"popularity\": 56012886,\n        \"portal\": \"./vendor/textures/supreme/portal.png\",\n        \"speedpad\": \"./vendor/textures/supreme/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/supreme/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/supreme/speedpadred.png\",\n        \"splats\": \"./vendor/textures/supreme/splats.png\",\n        \"tiles\": \"./vendor/textures/supreme/tiles.png\",\n        \"url\": \"supreme\"\n    },\n    \"Circlejerk\": {\n        \"author\": \"Bizkut and Ion\",\n        \"name\": \"Circlejerk\",\n        \"popularity\": 54315659,\n        \"portal\": \"./vendor/textures/circlejerk/portal.png\",\n        \"speedpad\": \"./vendor/textures/circlejerk/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/circlejerk/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/circlejerk/speedpadred.png\",\n        \"splats\": \"./vendor/textures/circlejerk/splats.png\",\n        \"tiles\": \"./vendor/textures/circlejerk/tiles.png\",\n        \"url\": \"circlejerk\"\n    },\n    \"Crystal\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Crystal\",\n        \"popularity\": 50792579,\n        \"portal\": \"./vendor/textures/crystal/portal.png\",\n        \"speedpad\": \"./vendor/textures/crystal/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/crystal/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/crystal/speedpadred.png\",\n        \"splats\": \"./vendor/textures/crystal/splats.png\",\n        \"tiles\": \"./vendor/textures/crystal/tiles.png\",\n        \"url\": \"crystal\"\n    },\n    \"Turbo\": {\n        \"author\": \"Ooops\",\n        \"name\": \"Turbo\",\n        \"popularity\": 38707709,\n        \"portal\": \"./vendor/textures/turbo/portal.png\",\n        \"speedpad\": \"./vendor/textures/turbo/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/turbo/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/turbo/speedpadred.png\",\n        \"splats\": \"./vendor/textures/turbo/splats.png\",\n        \"tiles\": \"./vendor/textures/turbo/tiles.png\",\n        \"url\": \"turbo\"\n    },\n    \"Celeste\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Celeste\",\n        \"popularity\": 37567955,\n        \"portal\": \"./vendor/textures/celeste/portal.png\",\n        \"speedpad\": \"./vendor/textures/celeste/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/celeste/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/celeste/speedpadred.png\",\n        \"splats\": \"./vendor/textures/celeste/splats.png\",\n        \"tiles\": \"./vendor/textures/celeste/tiles.png\",\n        \"url\": \"celeste\"\n    },\n    \"Flat (Bug)\": {\n        \"author\": \"Bug\",\n        \"name\": \"Flat (Bug)\",\n        \"popularity\": 36605283,\n        \"portal\": \"./vendor/textures/flatbug/portal.png\",\n        \"speedpad\": \"./vendor/textures/flatbug/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/flatbug/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/flatbug/speedpadred.png\",\n        \"splats\": \"./vendor/textures/flatbug/splats.png\",\n        \"tiles\": \"./vendor/textures/flatbug/tiles.png\",\n        \"url\": \"flatbug\"\n    },\n    \"Starlight\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Starlight\",\n        \"popularity\": 34834874,\n        \"portal\": \"./vendor/textures/starlight/portal.png\",\n        \"speedpad\": \"./vendor/textures/starlight/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/starlight/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/starlight/speedpadred.png\",\n        \"splats\": \"./vendor/textures/starlight/splats.png\",\n        \"tiles\": \"./vendor/textures/starlight/tiles.png\",\n        \"url\": \"starlight\"\n    },\n    \"Bold\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Bold\",\n        \"popularity\": 30256001,\n        \"portal\": \"./vendor/textures/bold/portal.png\",\n        \"speedpad\": \"./vendor/textures/bold/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/bold/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/bold/speedpadred.png\",\n        \"splats\": \"./vendor/textures/bold/splats.png\",\n        \"tiles\": \"./vendor/textures/bold/tiles.png\",\n        \"url\": \"bold\"\n    },\n    \"Mumbo\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Mumbo\",\n        \"popularity\": 26355501,\n        \"portal\": \"./vendor/textures/mumbo/portal.png\",\n        \"speedpad\": \"./vendor/textures/mumbo/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/mumbo/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/mumbo/speedpadred.png\",\n        \"splats\": \"./vendor/textures/mumbo/splats.png\",\n        \"tiles\": \"./vendor/textures/mumbo/tiles.png\",\n        \"url\": \"mumbo\"\n    },\n    \"Maxima\": {\n        \"author\": \"MagicPigeon\",\n        \"name\": \"Maxima\",\n        \"popularity\": 24527963,\n        \"portal\": \"./vendor/textures/maxima/portal.png\",\n        \"speedpad\": \"./vendor/textures/maxima/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/maxima/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/maxima/speedpadred.png\",\n        \"splats\": \"./vendor/textures/maxima/splats.png\",\n        \"tiles\": \"./vendor/textures/maxima/tiles.png\",\n        \"url\": \"maxima\"\n    },\n    \"Chip\": {\n        \"author\": \"nom\",\n        \"name\": \"Chip\",\n        \"popularity\": 17276938,\n        \"portal\": \"./vendor/textures/chip/portal.png\",\n        \"speedpad\": \"./vendor/textures/chip/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/chip/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/chip/speedpadred.png\",\n        \"splats\": \"./vendor/textures/chip/splats.png\",\n        \"tiles\": \"./vendor/textures/chip/tiles.png\",\n        \"url\": \"chip\"\n    },\n    \"nom\": {\n        \"author\": \"nom\",\n        \"name\": \"nom\",\n        \"popularity\": 6966621,\n        \"portal\": \"./vendor/textures/nom/portal.png\",\n        \"speedpad\": \"./vendor/textures/nom/speedpad.png\",\n        \"speedpadBlue\": \"./vendor/textures/nom/speedpadblue.png\",\n        \"speedpadRed\": \"./vendor/textures/nom/speedpadred.png\",\n        \"splats\": \"./vendor/textures/nom/splats.png\",\n        \"tiles\": \"./vendor/textures/nom/tiles.png\",\n        \"url\": \"nom\"\n    }\n};\nfunction getTexture(name) {\n    return textures[name];\n}\nfunction getTextureList() {\n    let list = [];\n    Object.entries(textures).forEach(([name, texture]) => {\n        list.push({ label: name, value: JSON.stringify(texture) });\n    });\n    return list;\n}\n\n\n//# sourceURL=webpack:///./src/utils/Textures.ts?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderProfileCheckbox", function() { return renderProfileCheckbox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderTileRespawnSelect", function() { return renderTileRespawnSelect; });
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
+
+
+
+// Checkboxes:
+function handleCheckboxChange(e) {
+    js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.set(e.target.id, String(!e.target.checked));
+}
+function renderProfileCheckbox(cookieName, label, defaultValue) {
+    const cookie = js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.get(cookieName);
+    const initial = cookie === 'true' ? true :
+        cookie === 'false' ? false :
+            defaultValue;
+    // NOTE: the booleans are always inverted. For example:
+    // Enable Ball Spin, the cookie name is disableBallSpin.
+    // When checked, the cookie value is false, and when unchecked it's true.
+    // The defaultValue parameter is the default cookie value, NOT checked.
+    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null,
+        react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", { type: "checkbox", id: cookieName, defaultChecked: !initial, onChange: handleCheckboxChange }),
+        ' ',
+        label));
+}
+// Select for Tile Respawn Warnings:
+const respawns = [
+    { label: 'Blink', value: 'blink' },
+    { label: 'Transparent', value: 'alpha' },
+    { label: 'None', value: 'none' }
+];
+function tileRespawnChange(selection) {
+    js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.set('tileRespawnWarnings', selection.value);
+}
+function renderTileRespawnSelect() {
+    var _a;
+    const cookie = js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.get('tileRespawnWarnings');
+    const initial = (_a = respawns.find(r => r.value === cookie)) !== null && _a !== void 0 ? _a : respawns[0];
+    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"], { defaultValue: initial, options: respawns, onChange: tileRespawnChange, menuPosition: "fixed" }));
+}
+
+
+/***/ }),
+
+/***/ "./src/utils/Textures.tsx":
+/*!********************************!*\
+  !*** ./src/utils/Textures.tsx ***!
+  \********************************/
+/*! exports provided: renderTextureSelect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderTextureSelect", function() { return renderTextureSelect; });
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
+
+
+
+const textures = {
+    "Classic": {
+        "author": "LuckySpammer",
+        "name": "Classic",
+        "popularity": 2921165341,
+        "portal": "./vendor/textures/classic/portal.png",
+        "speedpad": "./vendor/textures/classic/speedpad.png",
+        "speedpadBlue": "./vendor/textures/classic/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/classic/speedpadred.png",
+        "splats": "./vendor/textures/classic/splats.png",
+        "tiles": "./vendor/textures/classic/tiles.png",
+        "url": "classic"
+    },
+    "Sniper Pack": {
+        "author": "DOKE",
+        "name": "Sniper Pack",
+        "popularity": 1126558074,
+        "portal": "./vendor/textures/sniperpack/portal.png",
+        "speedpad": "./vendor/textures/sniperpack/speedpad.png",
+        "speedpadBlue": "./vendor/textures/sniperpack/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/sniperpack/speedpadred.png",
+        "splats": "./vendor/textures/sniperpack/splats.png",
+        "tiles": "./vendor/textures/sniperpack/tiles.png",
+        "url": "sniperpack"
+    },
+    "Coral Light": {
+        "author": "MagicPigeon",
+        "name": "Coral Light",
+        "popularity": 980595502,
+        "portal": "./vendor/textures/corallight/portal.png",
+        "speedpad": "./vendor/textures/corallight/speedpad.png",
+        "speedpadBlue": "./vendor/textures/corallight/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/corallight/speedpadred.png",
+        "splats": "./vendor/textures/corallight/splats.png",
+        "tiles": "./vendor/textures/corallight/tiles.png",
+        "url": "corallight"
+    },
+    "Muscle's Cup Gradients": {
+        "author": "MuscleCups",
+        "name": "Muscle's Cup Gradients",
+        "popularity": 923618899,
+        "portal": "./vendor/textures/musclescupgradients/portal.png",
+        "speedpad": "./vendor/textures/musclescupgradients/speedpad.png",
+        "speedpadBlue": "./vendor/textures/musclescupgradients/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/musclescupgradients/speedpadred.png",
+        "splats": "./vendor/textures/musclescupgradients/splats.png",
+        "tiles": "./vendor/textures/musclescupgradients/tiles.png",
+        "url": "musclescupgradients"
+    },
+    "Muscle's Cup OG": {
+        "author": "MuscleCups",
+        "name": "Muscle's Cup OG",
+        "popularity": 574009262,
+        "portal": "./vendor/textures/musclescupog/portal.png",
+        "speedpad": "./vendor/textures/musclescupog/speedpad.png",
+        "speedpadBlue": "./vendor/textures/musclescupog/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/musclescupog/speedpadred.png",
+        "splats": "./vendor/textures/musclescupog/splats.png",
+        "tiles": "./vendor/textures/musclescupog/tiles.png",
+        "url": "musclescupog"
+    },
+    "Coral": {
+        "author": "MagicPigeon",
+        "name": "Coral",
+        "popularity": 397846887,
+        "portal": "./vendor/textures/coral/portal.png",
+        "speedpad": "./vendor/textures/coral/speedpad.png",
+        "speedpadBlue": "./vendor/textures/coral/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/coral/speedpadred.png",
+        "splats": "./vendor/textures/coral/splats.png",
+        "tiles": "./vendor/textures/coral/tiles.png",
+        "url": "coral"
+    },
+    "MTBad": {
+        "author": "mtbkr24",
+        "name": "MTBad",
+        "popularity": 384471824,
+        "portal": "./vendor/textures/mtbad/portal.png",
+        "speedpad": "./vendor/textures/mtbad/speedpad.png",
+        "speedpadBlue": "./vendor/textures/mtbad/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/mtbad/speedpadred.png",
+        "splats": "./vendor/textures/mtbad/splats.png",
+        "tiles": "./vendor/textures/mtbad/tiles.png",
+        "url": "mtbad"
+    },
+    "Flat": {
+        "author": "why",
+        "name": "Flat",
+        "popularity": 364039388,
+        "portal": "./vendor/textures/flat/portal.png",
+        "speedpad": "./vendor/textures/flat/speedpad.png",
+        "speedpadBlue": "./vendor/textures/flat/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/flat/speedpadred.png",
+        "splats": "./vendor/textures/flat/splats.png",
+        "tiles": "./vendor/textures/flat/tiles.png",
+        "url": "flat"
+    },
+    "MLTP Live": {
+        "author": "Ron Spawnson",
+        "name": "MLTP Live",
+        "popularity": 268288375,
+        "portal": "./vendor/textures/mltplive/portal.png",
+        "speedpad": "./vendor/textures/mltplive/speedpad.png",
+        "speedpadBlue": "./vendor/textures/mltplive/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/mltplive/speedpadred.png",
+        "splats": "./vendor/textures/mltplive/splats.png",
+        "tiles": "./vendor/textures/mltplive/tiles.png",
+        "url": "mltplive"
+    },
+    "Plumb": {
+        "author": "SuperTed",
+        "name": "Plumb",
+        "popularity": 195240879,
+        "portal": "./vendor/textures/plumb/portal.png",
+        "speedpad": "./vendor/textures/plumb/speedpad.png",
+        "speedpadBlue": "./vendor/textures/plumb/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/plumb/speedpadred.png",
+        "splats": "./vendor/textures/plumb/splats.png",
+        "tiles": "./vendor/textures/plumb/tiles.png",
+        "url": "plumb"
+    },
+    "Isometric": {
+        "author": "mtbkr24",
+        "name": "Isometric",
+        "popularity": 183844878,
+        "portal": "./vendor/textures/isometric/portal.png",
+        "speedpad": "./vendor/textures/isometric/speedpad.png",
+        "speedpadBlue": "./vendor/textures/isometric/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/isometric/speedpadred.png",
+        "splats": "./vendor/textures/isometric/splats.png",
+        "tiles": "./vendor/textures/isometric/tiles.png",
+        "url": "isometric"
+    },
+    "Plique": {
+        "author": "Despair",
+        "name": "Plique",
+        "popularity": 167979698,
+        "portal": "./vendor/textures/plique/portal.png",
+        "speedpad": "./vendor/textures/plique/speedpad.png",
+        "speedpadBlue": "./vendor/textures/plique/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/plique/speedpadred.png",
+        "splats": "./vendor/textures/plique/splats.png",
+        "tiles": "./vendor/textures/plique/tiles.png",
+        "url": "plique"
+    },
+    "CamsPP Light": {
+        "author": "Cam",
+        "name": "CamsPP Light",
+        "popularity": 161206545,
+        "portal": "./vendor/textures/camspplight/portal.png",
+        "speedpad": "./vendor/textures/camspplight/speedpad.png",
+        "speedpadBlue": "./vendor/textures/camspplight/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/camspplight/speedpadred.png",
+        "splats": "./vendor/textures/camspplight/splats.png",
+        "tiles": "./vendor/textures/camspplight/tiles.png",
+        "url": "camspplight"
+    },
+    "Sparkle": {
+        "author": "MagicPigeon",
+        "name": "Sparkle",
+        "popularity": 157434127,
+        "portal": "./vendor/textures/sparkle/portal.png",
+        "speedpad": "./vendor/textures/sparkle/speedpad.png",
+        "speedpadBlue": "./vendor/textures/sparkle/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/sparkle/speedpadred.png",
+        "splats": "./vendor/textures/sparkle/splats.png",
+        "tiles": "./vendor/textures/sparkle/tiles.png",
+        "url": "sparkle"
+    },
+    "24K": {
+        "author": "MagicPigeon",
+        "name": "24K",
+        "popularity": 151940555,
+        "portal": "./vendor/textures/24k/portal.png",
+        "speedpad": "./vendor/textures/24k/speedpad.png",
+        "speedpadBlue": "./vendor/textures/24k/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/24k/speedpadred.png",
+        "splats": "./vendor/textures/24k/splats.png",
+        "tiles": "./vendor/textures/24k/tiles.png",
+        "url": "24k"
+    },
+    "CamsPP Old": {
+        "author": "Cam",
+        "name": "CamsPP Old",
+        "popularity": 148573697,
+        "portal": "./vendor/textures/camsppold/portal.png",
+        "speedpad": "./vendor/textures/camsppold/speedpad.png",
+        "speedpadBlue": "./vendor/textures/camsppold/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/camsppold/speedpadred.png",
+        "splats": "./vendor/textures/camsppold/splats.png",
+        "tiles": "./vendor/textures/camsppold/tiles.png",
+        "url": "camsppold"
+    },
+    "CMYK": {
+        "author": "MagicPigeon",
+        "name": "CMYK",
+        "popularity": 126742621,
+        "portal": "./vendor/textures/cmyk/portal.png",
+        "speedpad": "./vendor/textures/cmyk/speedpad.png",
+        "speedpadBlue": "./vendor/textures/cmyk/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/cmyk/speedpadred.png",
+        "splats": "./vendor/textures/cmyk/splats.png",
+        "tiles": "./vendor/textures/cmyk/tiles.png",
+        "url": "cmyk"
+    },
+    "CamsPP Dark": {
+        "author": "Cam",
+        "name": "CamsPP Dark",
+        "popularity": 120137217,
+        "portal": "./vendor/textures/camsppdark/portal.png",
+        "speedpad": "./vendor/textures/camsppdark/speedpad.png",
+        "speedpadBlue": "./vendor/textures/camsppdark/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/camsppdark/speedpadred.png",
+        "splats": "./vendor/textures/camsppdark/splats.png",
+        "tiles": "./vendor/textures/camsppdark/tiles.png",
+        "url": "camsppdark"
+    },
+    "Precision Dark": {
+        "author": "Peach Fuzz",
+        "name": "Precision Dark",
+        "popularity": 116594193,
+        "portal": "./vendor/textures/precisiondark/portal.png",
+        "speedpad": "./vendor/textures/precisiondark/speedpad.png",
+        "speedpadBlue": "./vendor/textures/precisiondark/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/precisiondark/speedpadred.png",
+        "splats": "./vendor/textures/precisiondark/splats.png",
+        "tiles": "./vendor/textures/precisiondark/tiles.png",
+        "url": "precisiondark"
+    },
+    "PastelPro": {
+        "author": "SuperTed",
+        "name": "PastelPro",
+        "popularity": 115963179,
+        "portal": "./vendor/textures/pastelpro/portal.png",
+        "speedpad": "./vendor/textures/pastelpro/speedpad.png",
+        "speedpadBlue": "./vendor/textures/pastelpro/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/pastelpro/speedpadred.png",
+        "splats": "./vendor/textures/pastelpro/splats.png",
+        "tiles": "./vendor/textures/pastelpro/tiles.png",
+        "url": "pastelpro"
+    },
+    "Element+": {
+        "author": "MagicPigeon",
+        "name": "Element+",
+        "popularity": 113423416,
+        "portal": "./vendor/textures/element/portal.png",
+        "speedpad": "./vendor/textures/element/speedpad.png",
+        "speedpadBlue": "./vendor/textures/element/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/element/speedpadred.png",
+        "splats": "./vendor/textures/element/splats.png",
+        "tiles": "./vendor/textures/element/tiles.png",
+        "url": "element"
+    },
+    "Sketch+": {
+        "author": "MagicPigeon",
+        "name": "Sketch+",
+        "popularity": 94563964,
+        "portal": "./vendor/textures/sketch/portal.png",
+        "speedpad": "./vendor/textures/sketch/speedpad.png",
+        "speedpadBlue": "./vendor/textures/sketch/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/sketch/speedpadred.png",
+        "splats": "./vendor/textures/sketch/splats.png",
+        "tiles": "./vendor/textures/sketch/tiles.png",
+        "url": "sketch"
+    },
+    "Electric": {
+        "author": "Bug",
+        "name": "Electric",
+        "popularity": 90140000,
+        "portal": "./vendor/textures/electric/portal.png",
+        "speedpad": "./vendor/textures/electric/speedpad.png",
+        "speedpadBlue": "./vendor/textures/electric/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/electric/speedpadred.png",
+        "splats": "./vendor/textures/electric/splats.png",
+        "tiles": "./vendor/textures/electric/tiles.png",
+        "url": "electric"
+    },
+    "Sharp": {
+        "author": "MagicPigeon",
+        "name": "Sharp",
+        "popularity": 84223773,
+        "portal": "./vendor/textures/sharp/portal.png",
+        "speedpad": "./vendor/textures/sharp/speedpad.png",
+        "speedpadBlue": "./vendor/textures/sharp/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/sharp/speedpadred.png",
+        "splats": "./vendor/textures/sharp/splats.png",
+        "tiles": "./vendor/textures/sharp/tiles.png",
+        "url": "sharp"
+    },
+    "Mural": {
+        "author": "DaEvil1",
+        "name": "Mural",
+        "popularity": 58661716,
+        "portal": "./vendor/textures/mural/portal.png",
+        "speedpad": "./vendor/textures/mural/speedpad.png",
+        "speedpadBlue": "./vendor/textures/mural/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/mural/speedpadred.png",
+        "splats": "./vendor/textures/mural/splats.png",
+        "tiles": "./vendor/textures/mural/tiles.png",
+        "url": "mural"
+    },
+    "TerminalPX": {
+        "author": "pooppants",
+        "name": "TerminalPX",
+        "popularity": 58605743,
+        "portal": "./vendor/textures/terminalpx/portal.png",
+        "speedpad": "./vendor/textures/terminalpx/speedpad.png",
+        "speedpadBlue": "./vendor/textures/terminalpx/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/terminalpx/speedpadred.png",
+        "splats": "./vendor/textures/terminalpx/splats.png",
+        "tiles": "./vendor/textures/terminalpx/tiles.png",
+        "url": "terminalpx"
+    },
+    "Supreme": {
+        "author": "bicycle",
+        "name": "Supreme",
+        "popularity": 56012886,
+        "portal": "./vendor/textures/supreme/portal.png",
+        "speedpad": "./vendor/textures/supreme/speedpad.png",
+        "speedpadBlue": "./vendor/textures/supreme/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/supreme/speedpadred.png",
+        "splats": "./vendor/textures/supreme/splats.png",
+        "tiles": "./vendor/textures/supreme/tiles.png",
+        "url": "supreme"
+    },
+    "Circlejerk": {
+        "author": "Bizkut and Ion",
+        "name": "Circlejerk",
+        "popularity": 54315659,
+        "portal": "./vendor/textures/circlejerk/portal.png",
+        "speedpad": "./vendor/textures/circlejerk/speedpad.png",
+        "speedpadBlue": "./vendor/textures/circlejerk/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/circlejerk/speedpadred.png",
+        "splats": "./vendor/textures/circlejerk/splats.png",
+        "tiles": "./vendor/textures/circlejerk/tiles.png",
+        "url": "circlejerk"
+    },
+    "Crystal": {
+        "author": "MagicPigeon",
+        "name": "Crystal",
+        "popularity": 50792579,
+        "portal": "./vendor/textures/crystal/portal.png",
+        "speedpad": "./vendor/textures/crystal/speedpad.png",
+        "speedpadBlue": "./vendor/textures/crystal/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/crystal/speedpadred.png",
+        "splats": "./vendor/textures/crystal/splats.png",
+        "tiles": "./vendor/textures/crystal/tiles.png",
+        "url": "crystal"
+    },
+    "Turbo": {
+        "author": "Ooops",
+        "name": "Turbo",
+        "popularity": 38707709,
+        "portal": "./vendor/textures/turbo/portal.png",
+        "speedpad": "./vendor/textures/turbo/speedpad.png",
+        "speedpadBlue": "./vendor/textures/turbo/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/turbo/speedpadred.png",
+        "splats": "./vendor/textures/turbo/splats.png",
+        "tiles": "./vendor/textures/turbo/tiles.png",
+        "url": "turbo"
+    },
+    "Celeste": {
+        "author": "MagicPigeon",
+        "name": "Celeste",
+        "popularity": 37567955,
+        "portal": "./vendor/textures/celeste/portal.png",
+        "speedpad": "./vendor/textures/celeste/speedpad.png",
+        "speedpadBlue": "./vendor/textures/celeste/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/celeste/speedpadred.png",
+        "splats": "./vendor/textures/celeste/splats.png",
+        "tiles": "./vendor/textures/celeste/tiles.png",
+        "url": "celeste"
+    },
+    "Flat (Bug)": {
+        "author": "Bug",
+        "name": "Flat (Bug)",
+        "popularity": 36605283,
+        "portal": "./vendor/textures/flatbug/portal.png",
+        "speedpad": "./vendor/textures/flatbug/speedpad.png",
+        "speedpadBlue": "./vendor/textures/flatbug/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/flatbug/speedpadred.png",
+        "splats": "./vendor/textures/flatbug/splats.png",
+        "tiles": "./vendor/textures/flatbug/tiles.png",
+        "url": "flatbug"
+    },
+    "Starlight": {
+        "author": "MagicPigeon",
+        "name": "Starlight",
+        "popularity": 34834874,
+        "portal": "./vendor/textures/starlight/portal.png",
+        "speedpad": "./vendor/textures/starlight/speedpad.png",
+        "speedpadBlue": "./vendor/textures/starlight/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/starlight/speedpadred.png",
+        "splats": "./vendor/textures/starlight/splats.png",
+        "tiles": "./vendor/textures/starlight/tiles.png",
+        "url": "starlight"
+    },
+    "Bold": {
+        "author": "MagicPigeon",
+        "name": "Bold",
+        "popularity": 30256001,
+        "portal": "./vendor/textures/bold/portal.png",
+        "speedpad": "./vendor/textures/bold/speedpad.png",
+        "speedpadBlue": "./vendor/textures/bold/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/bold/speedpadred.png",
+        "splats": "./vendor/textures/bold/splats.png",
+        "tiles": "./vendor/textures/bold/tiles.png",
+        "url": "bold"
+    },
+    "Mumbo": {
+        "author": "MagicPigeon",
+        "name": "Mumbo",
+        "popularity": 26355501,
+        "portal": "./vendor/textures/mumbo/portal.png",
+        "speedpad": "./vendor/textures/mumbo/speedpad.png",
+        "speedpadBlue": "./vendor/textures/mumbo/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/mumbo/speedpadred.png",
+        "splats": "./vendor/textures/mumbo/splats.png",
+        "tiles": "./vendor/textures/mumbo/tiles.png",
+        "url": "mumbo"
+    },
+    "Maxima": {
+        "author": "MagicPigeon",
+        "name": "Maxima",
+        "popularity": 24527963,
+        "portal": "./vendor/textures/maxima/portal.png",
+        "speedpad": "./vendor/textures/maxima/speedpad.png",
+        "speedpadBlue": "./vendor/textures/maxima/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/maxima/speedpadred.png",
+        "splats": "./vendor/textures/maxima/splats.png",
+        "tiles": "./vendor/textures/maxima/tiles.png",
+        "url": "maxima"
+    },
+    "Chip": {
+        "author": "nom",
+        "name": "Chip",
+        "popularity": 17276938,
+        "portal": "./vendor/textures/chip/portal.png",
+        "speedpad": "./vendor/textures/chip/speedpad.png",
+        "speedpadBlue": "./vendor/textures/chip/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/chip/speedpadred.png",
+        "splats": "./vendor/textures/chip/splats.png",
+        "tiles": "./vendor/textures/chip/tiles.png",
+        "url": "chip"
+    },
+    "nom": {
+        "author": "nom",
+        "name": "nom",
+        "popularity": 6966621,
+        "portal": "./vendor/textures/nom/portal.png",
+        "speedpad": "./vendor/textures/nom/speedpad.png",
+        "speedpadBlue": "./vendor/textures/nom/speedpadblue.png",
+        "speedpadRed": "./vendor/textures/nom/speedpadred.png",
+        "splats": "./vendor/textures/nom/splats.png",
+        "tiles": "./vendor/textures/nom/tiles.png",
+        "url": "nom"
+    }
+};
+function getTexture(name) {
+    return textures[name];
+}
+function getTextureList() {
+    const list = [];
+    Object.entries(textures).forEach(([name, texture]) => {
+        list.push({ label: name, value: JSON.stringify(texture) });
+    });
+    return list;
+}
+function handleTextureChange(selection) {
+    js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.set('textures', selection.value);
+}
+function renderTextureSelect() {
+    const initial = { label: "Muscle's Cup Gradients" };
+    const cookie = js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.get('textures');
+    if (cookie) {
+        const texture = JSON.parse(cookie);
+        const name = texture.name;
+        if (getTexture(name)) {
+            initial.label = name;
+        }
+    }
+    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"], { defaultValue: initial, options: getTextureList(), onChange: handleTextureChange, menuPosition: "fixed" }));
+}
+
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=main.js.map

@@ -36,17 +36,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -91,7 +106,7 @@ eval("\n\nvar has = Object.prototype.hasOwnProperty\n  , prefix = '~';\n\n/**\n 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return PacketDataPlayer; });\nconst now = performance.now.bind(performance);\n// NOTE: Minimum interval in browsers is 4ms.\nconst DEFAULT_INTERVAL = 4;\nclass PacketDataPlayer {\n    constructor(packets, callback, doneCallback = () => { }) {\n        this.packets = packets;\n        this.callback = callback;\n        this.doneCallback = doneCallback;\n        this.currentTime = 0;\n        this.paused = false;\n        this._loop = () => {\n            this.currentTime = now() - this.startedAt;\n            const packet = this.scheduledPacket;\n            if (!packet) {\n                this.pause();\n                this.doneCallback();\n                return;\n            }\n            if (this.currentTime < packet[0]) {\n                return;\n            }\n            if (packet[1] == \"connect\") {\n                let index = this.packets.findIndex(p => p[1] == \"end\");\n                let endPacket = this.packets[index] || this.packets[this.packets.length - 1];\n                packet[2] = packet[2] || {};\n                packet[2].duration = endPacket[0];\n            }\n            this.callback(packet[0], packet[1], packet[2]);\n            this.currentIndex++;\n            this.scheduledPacket = this.packets[this.currentIndex];\n        };\n        this.currentIndex = 0;\n        this.duration = packets[packets.length - 1][0];\n        let connect = packets.find(p => p[1] == \"connect\");\n        if (!connect) {\n            packets.splice(1, 0, [0, \"connect\", {}]);\n        }\n    }\n    seek(to) {\n        let index = this.packets.findIndex(([ts]) => ts < to);\n        let packet = this.packets[index];\n        let event = { ts: 0, time: 0, state: 0 };\n        while (packet) {\n            packet = this.packets[++index];\n            this.currentTime = packet[0];\n            if (packet[1] == \"time\") {\n                event.ts = packet[0];\n                event.time = packet[2].time;\n                event.state = packet[2].state;\n            }\n            if (packet[0] > to) {\n                let offset = packet[0] - event.ts;\n                let newtime = event.state == 5 ? event.time + offset : event.time - offset;\n                this.callback(packet[0], \"time\", { time: newtime, state: event.state, restore: true });\n                this.startedAt = now() - packet[0];\n                this.currentIndex = index;\n                this.scheduledPacket = packet;\n                break;\n            }\n            this.callback(packet[0], packet[1], packet[2]);\n        }\n    }\n    play(interval = DEFAULT_INTERVAL) {\n        if (this.paused) {\n            this.paused = false;\n            this.startedAt = now() - this.currentTime;\n        }\n        else {\n            this.startedAt = now();\n        }\n        this.scheduledPacket = this.packets[this.currentIndex];\n        this.loopId = setInterval(this._loop, interval);\n    }\n    pause() {\n        this.paused = true;\n        clearInterval(this.loopId);\n    }\n}\n\n\n//# sourceURL=webpack:///./src/utils/PacketDataPlayer.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return PacketDataPlayer; });\nconst now = performance.now.bind(performance);\n// NOTE: Minimum interval in browsers is 4ms.\nconst DEFAULT_INTERVAL = 4;\nclass PacketDataPlayer {\n    constructor(packets, callback, doneCallback = () => { }) {\n        this.packets = packets;\n        this.callback = callback;\n        this.doneCallback = doneCallback;\n        this.currentTime = 0;\n        this.paused = false;\n        this._loop = () => {\n            this.currentTime = now() - this.startedAt;\n            const packet = this.scheduledPacket;\n            if (!packet) {\n                this.pause();\n                this.doneCallback();\n                return;\n            }\n            if (this.currentTime < packet[0]) {\n                return;\n            }\n            if (packet[1] === \"connect\") {\n                const index = this.packets.findIndex(p => p[1] === \"end\");\n                const endPacket = this.packets[index] || this.packets[this.packets.length - 1];\n                packet[2] = packet[2] || {};\n                packet[2].duration = endPacket[0];\n            }\n            this.callback(packet[0], packet[1], packet[2]);\n            this.currentIndex++;\n            this.scheduledPacket = this.packets[this.currentIndex];\n        };\n        this.currentIndex = 0;\n        this.duration = packets[packets.length - 1][0];\n        const connect = packets.find(p => p[1] === \"connect\");\n        if (!connect) {\n            packets.splice(1, 0, [0, \"connect\", {}]);\n        }\n    }\n    seek(to) {\n        let index = this.packets.findIndex(([ts]) => ts < to);\n        let packet = this.packets[index];\n        const event = { ts: 0, time: 0, state: 0 };\n        while (packet) {\n            packet = this.packets[++index];\n            this.currentTime = packet[0];\n            if (packet[1] === \"time\") {\n                event.ts = packet[0];\n                event.time = packet[2].time;\n                event.state = packet[2].state;\n            }\n            if (packet[0] > to) {\n                const offset = packet[0] - event.ts;\n                const newtime = event.state === 5 ? event.time + offset : event.time - offset;\n                this.callback(packet[0], \"time\", { time: newtime, state: event.state, restore: true });\n                this.startedAt = now() - packet[0];\n                this.currentIndex = index;\n                this.scheduledPacket = packet;\n                break;\n            }\n            this.callback(packet[0], packet[1], packet[2]);\n        }\n    }\n    play(interval = DEFAULT_INTERVAL) {\n        if (this.paused) {\n            this.paused = false;\n            this.startedAt = now() - this.currentTime;\n        }\n        else {\n            this.startedAt = now();\n        }\n        this.scheduledPacket = this.packets[this.currentIndex];\n        this.loopId = setInterval(this._loop, interval);\n    }\n    pause() {\n        this.paused = true;\n        clearInterval(this.loopId);\n    }\n}\n\n\n//# sourceURL=webpack:///./src/utils/PacketDataPlayer.ts?");
 
 /***/ }),
 
