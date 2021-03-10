@@ -9,28 +9,6 @@
 		.hidden {
 			display: none !important;
 		}
-
-		#seek {
-			position: absolute;
-			top: 50px;
-			background-color: rgba(0, 0, 0, .75);
-			width: 200px;
-			padding: 15px;
-			border: 1px solid #404040;
-			border-radius: 3px;
-			z-index: 10;
-			font-size: 16px;
-		}
-
-		#seekTo {
-			background-color: #000000;
-			background-color: rgba(0, 0, 0, .75);
-			color: #ffffff;
-			border: 1px solid #ffffff;
-			padding: 3px;
-			outline: none;
-			font-size: 16px;
-		}
 	</style>
 
 	<link rel="stylesheet" href="./vendor/stylesheets/style.css">
@@ -45,12 +23,12 @@
 		<div id="sound">
 			<div id="soundEffects"></div>
 			<div id="soundMusic"></div>
-			<input id="volumeSlider" type="range" min="-50" max="0" />
+			<input id="volumeSlider" type="range" min="-50" max="0" style="width: 100%" onfocus="this.blur()" />
 		</div>
 
 		<canvas id="viewport" width="1280" height="800"></canvas>
 
-		<a id="exit" href="#" class="hidden">&lt;&lt; SEEK &gt;&gt;</a>
+		<a id="exit" href="#" class="hidden"></a>
 
 		<div class="message"></div>
 		<div id="loadingMessage">Loading...</div>
@@ -327,85 +305,8 @@
 		</div>
 	</div>
 
-	<div id="seek" class="hidden">
-		<p>
-			Seek to what position?
-			Enter a number between 1 and <span id="seekMax">max</span> seconds:
-		</p>
-		<p><input id="seekTo" size="5" maxlength="5" autocomplete="off"></p>
-	</div>
-
 	<script src="./vendor/compact/global-game.js"></script>
 	<script src="./vendor/egg/egg.js"></script>
-	<script>
-		tagpro.ready(function() {
-			tagproConfig.serverHost = "#";
-
-			tagpro.spectator = true;
-			tagpro.ui.spectatorInfo = function() { };
-
-			var seekMax;
-
-			tagpro.socket.on("connect", function(e) {
-				seekMax = Math.floor(e.duration / 1000) - 1;
-				$("#seekMax").html(seekMax);
-				$("#exit").removeClass("hidden");
-			})
-
-			$("#seekTo").keyup(function(e) {
-				if (e.which == 13) {
-					var secs = parseInt($("#seekTo").val());
-					$("#seekTo").val("");
-					$("#seek").addClass("hidden");
-
-					if (!isNaN(secs) && secs >= 1 && secs <= seekMax) {
-						window['seek'](secs * 1000);
-					}
-				}
-
-				if (e.which == 27) {
-					$("#seekTo").val("");
-					$("#seek").addClass("hidden");
-				}
-
-				e.stopPropagation();
-			});
-
-			$("#seekTo").keydown(function(e) { e.stopPropagation(); });
-			$("#seekTo").keypress(function(e) { e.stopPropagation(); });
-
-			$("#exit").click(function() {
-				$("#seek").removeClass("hidden");
-				$("#seekTo").focus();
-				return false;
-			});
-
-			tagpro.socket.on("end", function(e) {
-				$("#exit").addClass("hidden");
-
-				setTimeout(function () {
-					var i = setTimeout(function(){}); while(i--) clearTimeout(i);
-				}, 5000);
-			});
-
-			tagpro.socket.on("vcr_end", function(e) {
-				$("#exit").addClass("hidden");
-				tagpro.state = 2;
-			});
-
-			var performanceInfo = tagpro.ui.performanceInfo;
-			tagpro.ui.performanceInfo = function(e, t, n, r) {
-				tagpro.ping.avg = "Unknown";
-				performanceInfo(e, t, n, 0);
-			}
-
-			tagpro.socket.on("time", function(e) {
-				if (e.restore) {
-					tagpro.sound = window['restore_sound'];
-				}
-			});
-		});
-	</script>
 
 	<script src="vendors~main.js"></script>
 	<script src="game.js"></script>
