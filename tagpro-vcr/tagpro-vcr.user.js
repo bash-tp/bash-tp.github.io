@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          TagPro VCR
 // @description   Record TagPro socket data
-// @version       1.0.0
+// @version       1.0.1
 // @author        Kera, bash#
 // @icon          https://bash-tp.github.io/tagpro-vcr/images/vhs.png
 // @namespace     https://github.com/bash-tp/
@@ -10,16 +10,14 @@
 // @match         *://*.koalabeast.com/*
 // @match         *://*.jukejuice.com/*
 // @match         *://*.newcompte.fr/*
-// @require       https://wzrd.in/standalone/debug@latest
 // @require       https://unpkg.com/idb/build/iife/index-min.js
 // ==/UserScript==
 
-(function (createDebug, tagpro, idb, tagproConfig) {
+(function (tagpro, idb, tagproConfig) {
 	'use strict';
 
 	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-	var createDebug__default = /*#__PURE__*/_interopDefaultLegacy(createDebug);
 	var tagpro__default = /*#__PURE__*/_interopDefaultLegacy(tagpro);
 	var tagproConfig__default = /*#__PURE__*/_interopDefaultLegacy(tagproConfig);
 
@@ -195,7 +193,7 @@
 	    set welcome(version) { this.setCookie(vcrWelcome, version); this._welcome = version; }
 	}
 
-	const version = '1.0.0';
+	const version = '1.0.1';
 	class VcrWindow {
 	    constructor(settings, storage) {
 	        this.settings = settings;
@@ -237,6 +235,11 @@
 				Installed now: ${version}<br />
 				Previous version: ${previous}
 			</p>
+
+			<p><u>Version 1.0.1</u></p>
+			<ul class="bullet-list">
+				<li>Eliminate a dependency on a debugging library which isn't loading correctly.</li>
+			</ul>
 
 			<p><u>Version 1.0.0</u></p>
 			<ul class="bullet-list">
@@ -389,8 +392,9 @@
 	    }
 	}
 
-	const debug = createDebug__default['default']('vcr');
-	debug.enabled = true;
+	function debug(...args) {
+	    console.log("TagPro VCR:", ...args);
+	}
 	const settings = new VcrSettings();
 	let storage;
 	if (!settings.download) {
@@ -503,4 +507,4 @@
 	    });
 	}
 
-}(debug, tagpro, idb, tagproConfig));
+}(tagpro, idb, tagproConfig));

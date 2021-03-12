@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          TagPro VCR
 // @description   Record TagPro socket data
-// @version       1.0.0
+// @version       1.0.1
 // @author        Kera, bash#
 // @icon          https://bash-tp.github.io/tagpro-vcr/images/vhs.png
 // @namespace     https://github.com/bash-tp/
@@ -10,6 +10,5 @@
 // @match         *://*.koalabeast.com/*
 // @match         *://*.jukejuice.com/*
 // @match         *://*.newcompte.fr/*
-// @require       https://wzrd.in/standalone/debug@latest
 // @require       https://unpkg.com/idb/build/iife/index-min.js
 // ==/UserScript==
