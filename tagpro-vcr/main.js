@@ -344,8 +344,17 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
     }
     renderNavbarStopped() {
         const { appState } = this.props;
+        const fetchClasses = classnames__WEBPACK_IMPORTED_MODULE_0___default()('form-icon', 'icon', {
+            'loading': appState.fetching,
+            'icon-check': appState.recordingURL && !appState.fetching && appState.urlIsValid === true,
+            'icon-stop': appState.recordingURL && appState.urlIsValid === false
+        });
         return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "form-horizontal" },
             this.renderUploadLabel(appState.recordingName),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", null, " or "),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('input-group input-inline', { 'has-icon-right': !!appState.recordingURL }) },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { className: "form-input", type: "text", value: appState.recordingURL, onChange: appState.handleUrlChange, placeholder: "Fetch from URL (http://...)" }),
+                appState.recordingURL && react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("i", { className: fetchClasses })),
             react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { id: "file", type: "file", accept: ".ndjson,.jsonl", onChange: appState.handleFileSelect }),
             ' ',
             this.renderStartButton()));
@@ -442,8 +451,11 @@ class AppState {
     constructor() {
         this.recording = localStorage.getItem('recording');
         this.recordingName = localStorage.getItem('recordingName');
+        this.recordingURL = '';
         this.selectedFile = undefined;
         this.packets = undefined;
+        this.fetching = false;
+        this.urlIsValid = undefined;
         this.failed = false;
         this.started = false;
         this.playing = false;
@@ -477,6 +489,37 @@ class AppState {
             });
             reader.readAsText(file);
         });
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingURL, url => {
+            if (!this.recordingURL) {
+                return;
+            }
+            this.fetching = true;
+            fetch(url)
+                .then(r => {
+                if (!r.ok) {
+                    throw r;
+                }
+                else {
+                    return r.text();
+                }
+            })
+                .then(text => {
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(() => {
+                    this.recording = text;
+                    this.fetching = false;
+                    this.urlIsValid = true;
+                });
+            })
+                .catch(err => {
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(() => {
+                    this.recording = undefined;
+                    this.fetching = false;
+                    this.urlIsValid = false;
+                });
+            });
+        }, {
+            delay: 1000
+        });
         Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recording, localStore(this, 'recording'));
         Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingName, localStore(this, 'recordingName'));
     }
@@ -486,6 +529,12 @@ class AppState {
     handleFileSelect(ev) {
         this.selectedFile = ev.target.files[0];
         ev.target.value = '';
+    }
+    handleUrlChange(ev) {
+        this.recordingURL = ev.target.value;
+        this.selectedFile = undefined;
+        this.urlIsValid = undefined;
+        this.fetching = false;
     }
     handleRequestRecording() {
         this.finished = false;
