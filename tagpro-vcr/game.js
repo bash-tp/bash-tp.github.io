@@ -461,13 +461,37 @@ tagpro.ready(() => {
     tagproConfig.musicHost = "#";
     tagpro.spectator = true;
     tagpro.ui.spectatorInfo = () => { };
-    const performanceOn = !$.cookie("vcrHidePerformanceInfo");
     const performanceInfo = tagpro.ui.performanceInfo;
     tagpro.ui.performanceInfo = (e, t, n, r) => {
-        tagpro.settings.ui.performanceInfo = performanceOn;
         tagpro.ping.avg = "Unknown";
         performanceInfo(e, t, n, 0);
     };
+    // Note: $.cookie returns boolean values here rather than strings
+    // because global-game sets $.cookie.json = true
+    if (!!$.cookie("vcrHideFlair")) {
+        tagpro.renderer.drawFlair = () => { };
+    }
+    if (!!$.cookie("vcrHideRaptors")) {
+        tagpro.renderer.layers.ui.children.forEach(c => {
+            if (c.texture && c.texture.baseTexture && c.texture.baseTexture.imageUrl &&
+                c.texture.baseTexture.imageUrl.includes('raptor')) {
+                c.renderable = false;
+            }
+        });
+    }
+    const doSettings = () => {
+        tagpro.settings.ui.allChat = !$.cookie("vcrHideAllChat");
+        tagpro.settings.ui.teamChat = !$.cookie("vcrHideTeamChat");
+        tagpro.settings.ui.groupChat = !$.cookie("vcrHideGroupChat");
+        tagpro.settings.ui.systemChat = !$.cookie("vcrHideSystemChat");
+        tagpro.settings.ui.names = !$.cookie("vcrHideNames");
+        tagpro.settings.ui.degrees = !$.cookie("vcrHideDegrees");
+        tagpro.settings.ui.matchState = !$.cookie("vcrHideMatchState");
+        tagpro.settings.ui.performanceInfo = !$.cookie("vcrHidePerformanceInfo");
+        tagpro.settings.ui.teamNames = !!$.cookie("vcrHideTeamNames") ? "never" : "always";
+    };
+    tagpro.socket.on("connect", doSettings);
+    tagpro.socket.on("settings", doSettings);
     tagpro.socket.on("time", e => {
         if (e.restore) {
             tagpro.sound = save.sound;
