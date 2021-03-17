@@ -513,7 +513,32 @@ const io = {
         // NOTE: For testing
         // player.worker.on('packet', (ts, type, data) => console.log(ts, type, data));
         // player.worker.on('end', ev => console.log('End!'));
-        const socket = new _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_2__["default"](player);
+        const playerIds = () => {
+            return Object.keys(tagpro.players).map(Number);
+        };
+        const onEmit = (type, data) => {
+            var _a;
+            let target;
+            switch (type) {
+                case 'next':
+                case 'prev':
+                    const ids = type === 'next' ? playerIds().reverse() : playerIds();
+                    const cur = ids.indexOf(tagpro.playerId);
+                    target = (_a = ids[cur + 1]) !== null && _a !== void 0 ? _a : ids[0];
+                    break;
+                case 'redflagcarrier':
+                case 'blueflagcarrier':
+                    const flag = type === 'redflagcarrier' ? 2 : 1;
+                    const team = type === 'redflagcarrier' ? 1 : 2;
+                    target = playerIds().find(id => (tagpro.players[id].flag === flag) ||
+                        (tagpro.players[id].flag === 3 && tagpro.players[id].team === team));
+                    break;
+            }
+            if (target) {
+                player.emit('id', target);
+            }
+        };
+        const socket = new _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_2__["default"](player, onEmit);
         const channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__["default"]('vcr');
         channel.emit('request-recording');
         channel.on('recording', data => {
@@ -563,15 +588,12 @@ const io = {
             tagpro.sound = false;
             tagpro.gameEndsAt = null;
             tagpro.overtimeStartedAt = null;
-            const players = tagpro.players;
-            for (const id in players) {
-                if (players.hasOwnProperty(id)) {
-                    players[id].lastSync = {};
-                    if (Number(id) !== tagpro.playerId) {
-                        player.emit("playerLeft", id);
-                    }
+            playerIds().forEach(id => {
+                tagpro.players[id].lastSync = {};
+                if (id !== tagpro.playerId) {
+                    player.emit('playerLeft', id);
                 }
-            }
+            });
             for (let i = 0; i < 10; i++) {
                 player.emit("chat", { from: null, to: "all", message: "\xa0" });
             }
@@ -711,13 +733,17 @@ class EventedWorker extends Worker {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FakeSocket; });
 class FakeSocket {
-    constructor(player) {
+    constructor(player, onEmit) {
         this.player = player;
+        this.onEmit = onEmit;
     }
     on(type, listener) {
         this.player.on(type, listener);
     }
     emit(type, data) {
+        if (this.onEmit) {
+            this.onEmit(type, data);
+        }
         // this.player.worker.emit(type, data);
     }
     prependListener(type, listener) {
