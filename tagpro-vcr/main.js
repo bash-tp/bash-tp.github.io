@@ -251,11 +251,16 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 
 
 
+const gameFiles = {
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].NORMAL]: 'game.html',
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].EGGBALL]: 'game-egg.html',
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].DRAGON_TOWER]: 'game-dragon-tower.html'
+};
 const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class AppClass extends react__WEBPACK_IMPORTED_MODULE_2__["Component"] {
     renderGame() {
         const { appState } = this.props;
-        const eggBall = appState.isEggBall();
-        const gameSrc = eggBall ? "game-egg.html" : "game.html";
+        const gameType = appState.gameType();
+        const gameSrc = gameFiles[gameType];
         return react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("iframe", { id: "game-frame", src: gameSrc, frameBorder: "0" });
     }
     renderSettings() {
@@ -515,11 +520,12 @@ Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["render"])(react__WEBPACK_IMPORTED
 /*!********************************!*\
   !*** ./src/stores/AppState.ts ***!
   \********************************/
-/*! exports provided: Modals, AppState */
+/*! exports provided: GameTypes, Modals, AppState */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameTypes", function() { return GameTypes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Modals", function() { return Modals; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppState", function() { return AppState; });
 /* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
@@ -529,6 +535,12 @@ __webpack_require__.r(__webpack_exports__);
 const fetchPatterns = [
     new RegExp('^https://res\\.cloudinary\\.com/eggball/raw/upload/EggBall/[0-9]+.ndjson$')
 ];
+var GameTypes;
+(function (GameTypes) {
+    GameTypes[GameTypes["NORMAL"] = 0] = "NORMAL";
+    GameTypes[GameTypes["EGGBALL"] = 1] = "EGGBALL";
+    GameTypes[GameTypes["DRAGON_TOWER"] = 2] = "DRAGON_TOWER";
+})(GameTypes || (GameTypes = {}));
 var Modals;
 (function (Modals) {
     Modals[Modals["NONE"] = 0] = "NONE";
@@ -648,8 +660,20 @@ class AppState {
             location.reload();
         }
     }
-    isEggBall() {
-        return this.packets.find(p => p[1] === "eggBall");
+    gameType() {
+        const mapPacket = this.packets.find(p => p[1] === 'map');
+        try {
+            switch (mapPacket[2].info.name) {
+                case 'Egg Ball':
+                    return GameTypes.EGGBALL;
+                case 'Tower of the TagPro Dragon':
+                    return GameTypes.DRAGON_TOWER;
+            }
+        }
+        catch (_a) {
+            // ignore
+        }
+        return GameTypes.NORMAL;
     }
     handleSettings() {
         this.settings = !this.settings;
