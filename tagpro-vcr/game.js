@@ -446,25 +446,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_BackgroundPlayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/BackgroundPlayer */ "./src/utils/BackgroundPlayer.ts");
 /* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/EventedChannel */ "./src/utils/EventedChannel.ts");
 /* harmony import */ var _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/FakeSocket */ "./src/utils/FakeSocket.ts");
+/* harmony import */ var _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/PauseableTimeout */ "./src/utils/PauseableTimeout.ts");
+
 
 
 
 const save = {
+    performanceInfo: null,
+    seeking: false,
     sound: null,
     time: null,
     uiTimer: null,
     worldUpdate: null,
-    setTimeout: null
+    map: null
 };
+_utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].hookSetTimeout();
 tagpro.ready(() => {
+    $('#volumeSlider').blur();
     tagproConfig.serverHost = "#";
     tagproConfig.musicHost = "#";
     tagpro.spectator = true;
     tagpro.ui.spectatorInfo = () => { };
-    const performanceInfo = tagpro.ui.performanceInfo;
+    save.performanceInfo = tagpro.ui.performanceInfo;
     tagpro.ui.performanceInfo = (e, t, n, r) => {
-        tagpro.ping.avg = "Unknown";
-        performanceInfo(e, t, n, 0);
+        tagpro.ping.avg = "N/A";
+        save.performanceInfo(e, t, n, 0);
+    };
+    // The default "end" handler uses setTimeout to navigate back to
+    // the joiner, then calls sendPingStatistics right after. We'll
+    // override sendPingStatistics to cancel the timer and prevent
+    // navigating away.
+    tagpro.sendPingStatistics = () => {
+        const id = window.setTimeout(() => { });
+        clearTimeout(id - 1);
     };
     // Note: $.cookie returns boolean values here rather than strings
     // because global-game sets $.cookie.json = true
@@ -492,19 +506,22 @@ tagpro.ready(() => {
     };
     tagpro.socket.on("connect", doSettings);
     tagpro.socket.on("settings", doSettings);
-    tagpro.socket.on("time", e => {
-        if (e.restore) {
-            tagpro.sound = save.sound;
-        }
+    tagpro.socket.on("map", e => {
+        save.map = JSON.parse(JSON.stringify(e.tiles));
     });
-    tagpro.rawSocket.prependListener("end", e => {
-        // Block setTimeout to prevent the default "end" handler
-        // from trying to navigate back to the joiner
-        save.setTimeout = window.setTimeout;
-        window.setTimeout = (...args) => { return 0; };
+    tagpro.socket.on("vcr_time", e => {
+        if (save.seeking) {
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].setBase(e.time);
+        }
     });
     tagpro.socket.on("vcr_end", e => {
         tagpro.state = 2 /* Ended */;
+    });
+    tagpro.socket.on("vcr_seek", e => {
+        tagpro.sound = save.sound;
+        save.seeking = false;
+        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].setBase(0);
+        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].shiftAll(e.to);
     });
 });
 const io = {
@@ -558,32 +575,44 @@ const io = {
                 timer(...args);
             };
         });
-        channel.on('pause', () => {
+        let paused = false;
+        const pause = () => {
             player.pause();
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].pauseAll();
+            paused = true;
+            const now = Date.now();
             if (tagpro.gameEndsAt && !tagpro.overtimeStartedAt) {
-                save.time = tagpro.gameEndsAt.valueOf() - Date.now();
+                save.time = tagpro.gameEndsAt.valueOf() - now;
             }
             else if (tagpro.overtimeStartedAt) {
-                save.time = Date.now() - tagpro.overtimeStartedAt.valueOf();
+                save.time = now - tagpro.overtimeStartedAt.valueOf();
             }
             save.uiTimer = tagpro.ui.timer;
             save.worldUpdate = tagpro.world.update;
             tagpro.ui.timer = (...args) => { };
             tagpro.world.update = (...args) => { };
-        });
-        channel.on('unpause', () => {
+        };
+        const unpause = () => {
             tagpro.ui.timer = save.uiTimer;
             tagpro.world.update = save.worldUpdate;
+            const now = Date.now();
             if (tagpro.gameEndsAt && !tagpro.overtimeStartedAt) {
-                tagpro.gameEndsAt = new Date(Date.now() + save.time);
+                tagpro.gameEndsAt = now + save.time;
             }
             else if (tagpro.overtimeStartedAt) {
-                tagpro.overtimeStartedAt = new Date(Date.now() - save.time);
+                tagpro.overtimeStartedAt = now - save.time;
             }
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].resumeAll();
             player.play();
-        });
+            paused = false;
+        };
+        channel.on('pause', pause);
+        channel.on('unpause', unpause);
         channel.on('seek', to => {
-            player.pause();
+            if (!paused) {
+                player.pause();
+            }
+            save.seeking = true;
             save.sound = tagpro.sound;
             tagpro.sound = false;
             tagpro.gameEndsAt = null;
@@ -594,9 +623,20 @@ const io = {
                     player.emit('playerLeft', id);
                 }
             });
-            for (let i = 0; i < 10; i++) {
-                player.emit("chat", { from: null, to: "all", message: "\xa0" });
-            }
+            // Fire any pending timers now
+            // After the seek is complete, any new timers will be time-shifted
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].shiftAll(-1);
+            const update = tagpro.world.update;
+            tagpro.world.update = (...args) => {
+                tagpro.renderer.layers.splats.removeChildren();
+                for (let x = 0; x < save.map.length; x++) {
+                    for (let y = 0; y < save.map[x].length; y++) {
+                        tagpro.renderer.updateDynamicTile({ x, y, v: save.map[x][y] });
+                    }
+                }
+                tagpro.world.update = update;
+                update(...args);
+            };
             player.seek(to);
             player.play();
         });
@@ -633,10 +673,14 @@ class BackgroundPlayer extends eventemitter3__WEBPACK_IMPORTED_MODULE_0___defaul
         super();
         this.worker = new _EventedWorker__WEBPACK_IMPORTED_MODULE_1__["default"](stringUrl);
         this.worker.on('packet', (ts, type, ...args) => {
+            this.emit('vcr_time', { time: ts });
             this.emit(type, ...args);
         });
         this.worker.on('end', () => {
             this.emit('vcr_end');
+        });
+        this.worker.on('seek', to => {
+            this.emit('vcr_seek', { to });
         });
     }
     load(data) {
@@ -746,11 +790,11 @@ class FakeSocket {
         }
         // this.player.worker.emit(type, data);
     }
+    listeners(type) {
+        return this.player.listeners(type);
+    }
     prependListener(type, listener) {
-        const listeners = this.player.listeners(type);
-        this.player.removeAllListeners(type);
-        this.player.on(type, listener);
-        listeners.forEach(l => this.player.on(type, l));
+        this.listeners(type).unshift(listener);
     }
     removeListener(type, listener) {
         this.player.removeListener(type, listener);
@@ -764,6 +808,114 @@ class FakeSocket {
                 }
             }
         };
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/utils/PauseableTimeout.ts":
+/*!***************************************!*\
+  !*** ./src/utils/PauseableTimeout.ts ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PauseableTimeouts; });
+// Class to make all timers pauseable. We do this by intercepting every call
+// to setTimeout and scheduling our own timer instead. To pause, we cancel all
+// outstanding timers and make a note of how much time was left on each. Then
+// when resuming, we reschedule each timer to run after its remaining time.
+//
+// We also need to make clearTimeout work, which means storing the original
+// interval id assigned for each timer. A new interval id is generated each
+// time we pause/resume, so if the caller uses clearTimeout with the original
+// id, we need to map it to the current id for that timer.
+const _setTimeout = window.setTimeout;
+const _clearTimeout = window.clearTimeout;
+class PauseableTimer {
+    constructor(onExecute, handler, remaining, ...args) {
+        this.onExecute = onExecute;
+        this.handler = handler;
+        this.remaining = remaining;
+        this.args = args;
+        this.resume();
+    }
+    pause() {
+        _clearTimeout(this.timerId);
+        this.timerId = null;
+        this.remaining -= Date.now() - this.start;
+    }
+    resume() {
+        var _a;
+        const handler = () => {
+            if (this.handler instanceof Function) {
+                this.handler(...this.args);
+            }
+            else {
+                // tslint:disable-next-line: no-eval
+                eval(this.handler);
+            }
+            this.onExecute(this);
+        };
+        this.start = Date.now();
+        if (this.timerId)
+            _clearTimeout(this.timerId);
+        this.timerId = _setTimeout(handler.bind(this), this.remaining);
+        (_a = this.originalId) !== null && _a !== void 0 ? _a : (this.originalId = this.timerId);
+    }
+    shift(delta) {
+        this.pause();
+        this.remaining = delta < 0 ? 0 : Math.max(this.remaining - delta, 0);
+        this.resume();
+    }
+}
+const timers = {};
+let timeBase = 0;
+class PauseableTimeouts {
+    static hookSetTimeout() {
+        window.setTimeout = (handler, timeout, ...args) => {
+            // If the timeout is small, we're probably looking at use of
+            // setTimeout to escape the event loop rather than a real
+            // deferred action, so we'll bypass the special handling
+            if (timeout && (timeout > 10)) {
+                const onExecute = (timer) => {
+                    delete timers[timer.originalId];
+                };
+                const newTimer = new PauseableTimer(onExecute, handler, timeout + timeBase, ...args);
+                const id = newTimer.timerId;
+                timers[id] = newTimer;
+                return id;
+            }
+            else {
+                return _setTimeout(handler, timeout, ...args);
+            }
+        };
+        window.clearTimeout = (handle) => {
+            if (handle && (handle in timers)) {
+                const timerId = timers[handle].timerId;
+                if (timerId)
+                    _clearTimeout(timerId);
+                delete timers[handle];
+            }
+            else {
+                _clearTimeout(handle);
+            }
+        };
+    }
+    static pauseAll() {
+        Object.values(timers).forEach(timer => timer.pause());
+    }
+    static resumeAll() {
+        Object.values(timers).forEach(timer => timer.resume());
+    }
+    static shiftAll(delta) {
+        Object.values(timers).forEach(timer => timer.shift(delta));
+    }
+    static setBase(base) {
+        timeBase = base;
     }
 }
 
