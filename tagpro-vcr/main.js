@@ -319,6 +319,36 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", null,
                     react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn centered", onClick: appState.handleSettings }, "Done")))));
     }
+    saveCustomTextures() {
+        const { appState } = this.props;
+        const ok = () => {
+            _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["saveCustomTextures"]();
+            appState.handleDismissModal();
+            appState.handleCustomTextures();
+        };
+        appState.handleCustomTextureChecking();
+        _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["checkCustomTextures"](ok, appState.handleCustomTextureError);
+    }
+    renderCustomTextures() {
+        const { appState } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "container grid-sm panel" },
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-header" },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-title h5" }, "TagPro VCR Custom Textures")),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "panel-body" },
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("form", { className: "form-horizontal" },
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("tiles", "Tiles", { imagewidth: 640, imageheight: 440 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("speedpad", "Speedpad", { imagewidthatleast: 80, imagewidthmultipleof: 40, imageheight: 40 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("speedpadRed", "Speedpad (Red)", { imagewidthatleast: 80, imagewidthmultipleof: 40, imageheight: 40 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("speedpadBlue", "Speedpad (Blue)", { imagewidthatleast: 80, imagewidthmultipleof: 40, imageheight: 40 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("portal", "Portal", { imagewidthatleast: 80, imagewidthmultipleof: 40, imageheight: 40 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("splats", "Splats", { imagewidthatleast: 120, imagewidthmultipleof: 120, imageheight: 240 }),
+                    _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderCustomTextureInput"]("gravityWell", "Gravity Well", { imagewidth: 40, imageheight: 40 })),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", null),
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", { className: "text-center" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn btn-primary", onClick: this.saveCustomTextures.bind(this) }, "Save"),
+                    ' ',
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn", onClick: appState.handleCustomTextures }, "Cancel")))));
+    }
     renderInfo() {
         const { appState } = this.props;
         return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "container grid-sm panel" },
@@ -366,16 +396,23 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                     " for available texture packs."),
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", null, _utils_Textures__WEBPACK_IMPORTED_MODULE_7__["renderTextureSelect"]()),
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", null),
-                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn centered", onClick: appState.handleSettings }, "More Settings"))));
+                react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", { className: "text-center" },
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn", onClick: appState.handleCustomTextures }, "Use Custom Textures"),
+                    ' ',
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn", onClick: appState.handleSettings }, "More Settings")))));
     }
     renderModals() {
         const { appState } = this.props;
         const okButton = (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn btn-primary close-modal", onClick: appState.handleDismissModal }, "Ok"));
+        const textureCheckingModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Please Wait", body: "Validating...", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].TEXTURE_CHECKING });
+        const textureBadModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Invalid Texture", body: appState.customTextureError, stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].TEXTURE_BAD, closeHandler: appState.handleDismissModal, actionButton: okButton });
         const failedModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Invalid Recording", body: "This file does not contain a valid TagPro VCR recording.", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].FAILED, closeHandler: appState.handleDismissModal, actionButton: okButton });
         const forbiddenModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Forbidden", body: "Unable to load recordings from this URL.", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].FORBIDDEN, closeHandler: appState.handleDismissModal, actionButton: okButton });
-        const loadingModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Please Wait", body: "Loading...", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].FETCHING, closeHandler: appState.handleDismissModal });
+        const loadingModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Please Wait", body: "Loading...", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].FETCHING });
         const launchModal = react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], { title: "Ready to Play", body: "Your recording has been loaded and is ready to play.", stateVar: appState.modal === _stores_AppState__WEBPACK_IMPORTED_MODULE_5__["Modals"].LAUNCH, closeHandler: appState.handleDismissModal, actionButton: this.renderStartButton() });
         return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", null,
+            textureCheckingModal,
+            textureBadModal,
             failedModal,
             forbiddenModal,
             loadingModal,
@@ -454,7 +491,10 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("section", { className: "navbar-section" },
                     react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://github.com/bash-tp/tagpro-vcr", className: "btn" }, "GitHub"))),
             this.renderModals(),
-            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { id: "game-container" }, appState.started ? this.renderGame() : appState.settings ? this.renderSettings() : this.renderInfo())));
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { id: "game-container" }, appState.started ? this.renderGame() :
+                appState.settings ? this.renderSettings() :
+                    appState.customTextures ? this.renderCustomTextures() :
+                        this.renderInfo())));
     }
 });
 function timeFormat(time) {
@@ -480,7 +520,11 @@ __webpack_require__.r(__webpack_exports__);
 class Modal extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     render() {
         const p = this.props;
+        let closer;
         let footer;
+        if (p.closeHandler) {
+            closer = (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "btn btn-clear float-right close-modal", onClick: p.closeHandler }));
+        }
         if (p.actionButton) {
             footer = (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-footer" }, p.actionButton));
         }
@@ -488,7 +532,7 @@ class Modal extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-overlay" }),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-container" },
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-header" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { className: "btn btn-clear float-right close-modal", onClick: p.closeHandler }),
+                    closer,
                     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-title" },
                         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, p.title))),
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "modal-body" },
@@ -543,7 +587,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const fetchPatterns = [
-    new RegExp('^https://res\\.cloudinary\\.com/eggball/raw/upload/EggBall/[0-9]+.ndjson$')
+    new RegExp('^https://res\\.cloudinary\\.com/eggball/raw/upload/EggBall/[0-9]+.ndjson$'),
+    new RegExp('^https://tpm\\.gg/Match/Replay/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
 ];
 var GameTypes;
 (function (GameTypes) {
@@ -554,10 +599,12 @@ var GameTypes;
 var Modals;
 (function (Modals) {
     Modals[Modals["NONE"] = 0] = "NONE";
-    Modals[Modals["FAILED"] = 1] = "FAILED";
-    Modals[Modals["FORBIDDEN"] = 2] = "FORBIDDEN";
-    Modals[Modals["FETCHING"] = 3] = "FETCHING";
-    Modals[Modals["LAUNCH"] = 4] = "LAUNCH";
+    Modals[Modals["TEXTURE_CHECKING"] = 1] = "TEXTURE_CHECKING";
+    Modals[Modals["TEXTURE_BAD"] = 2] = "TEXTURE_BAD";
+    Modals[Modals["FAILED"] = 3] = "FAILED";
+    Modals[Modals["FORBIDDEN"] = 4] = "FORBIDDEN";
+    Modals[Modals["FETCHING"] = 5] = "FETCHING";
+    Modals[Modals["LAUNCH"] = 6] = "LAUNCH";
 })(Modals || (Modals = {}));
 class AppState {
     constructor() {
@@ -568,6 +615,8 @@ class AppState {
         this.packets = undefined;
         this.modal = Modals.NONE;
         this.settings = false;
+        this.customTextures = false;
+        this.customTextureError = '';
         this.fetching = false;
         this.urlIsValid = undefined;
         this.started = false;
@@ -691,8 +740,19 @@ class AppState {
     handleSettings() {
         this.settings = !this.settings;
     }
+    handleCustomTextures() {
+        this.customTextures = !this.customTextures;
+    }
+    handleCustomTextureChecking() {
+        this.modal = Modals.TEXTURE_CHECKING;
+    }
+    handleCustomTextureError(error) {
+        this.customTextureError = error;
+        this.modal = Modals.TEXTURE_BAD;
+    }
     handleFileSelect(ev) {
         this.selectedFile = ev.target.files[0];
+        this.recordingURL = '';
         ev.target.value = '';
     }
     handleUrlChange(ev) {
@@ -953,12 +1013,15 @@ function renderTileRespawnSelect() {
 /*!********************************!*\
   !*** ./src/utils/Textures.tsx ***!
   \********************************/
-/*! exports provided: renderTextureSelect */
+/*! exports provided: renderTextureSelect, renderCustomTextureInput, checkCustomTextures, saveCustomTextures */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderTextureSelect", function() { return renderTextureSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderCustomTextureInput", function() { return renderCustomTextureInput; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkCustomTextures", function() { return checkCustomTextures; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveCustomTextures", function() { return saveCustomTextures; });
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -970,6 +1033,9 @@ __webpack_require__.r(__webpack_exports__);
 const cookieOptions = {
     expires: 36500
 };
+let currentTexture;
+// Texture definitions are copied from the "texture-pack-data" section
+// at https://tagpro.koalabeast.com/textures/
 const textures = {
     "Classic": {
         "author": "LuckySpammer",
@@ -1432,26 +1498,76 @@ function getTexture(name) {
     return textures[name];
 }
 function getTextureList() {
-    const list = [];
-    Object.entries(textures).forEach(([name, texture]) => {
-        list.push({ label: name, value: JSON.stringify(texture) });
-    });
-    return list;
+    return Object.keys(textures).map(key => { return { label: key, value: key }; });
+}
+function setTextureCookie() {
+    js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.set('textures', JSON.stringify(currentTexture), cookieOptions);
 }
 function handleTextureChange(selection) {
-    js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.set('textures', selection.value, cookieOptions);
+    currentTexture = getTexture(selection.label);
+    setTextureCookie();
 }
 function renderTextureSelect() {
-    const initial = { label: "Muscle's Cup Gradients" };
+    currentTexture = getTexture("Muscle's Cup Gradients");
     const cookie = js_cookie__WEBPACK_IMPORTED_MODULE_0___default.a.get('textures');
     if (cookie) {
-        const texture = JSON.parse(cookie);
-        const name = texture.name;
-        if (getTexture(name)) {
-            initial.label = name;
-        }
+        currentTexture = JSON.parse(cookie);
     }
-    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"], { defaultValue: initial, options: getTextureList(), onChange: handleTextureChange, menuPosition: "fixed" }));
+    const selected = { label: currentTexture['name'] === 'custom' ? 'Custom' : currentTexture['name'] };
+    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"], { defaultValue: selected, options: getTextureList(), onChange: handleTextureChange, menuPosition: "fixed" }));
+}
+function renderCustomTextureInput(id, name, props) {
+    return (react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", { className: "form-group" },
+        react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", { className: "col-3" },
+            react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", { className: "form-label", htmlFor: id }, name)),
+        react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", { className: "col-9" },
+            react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", Object.assign({ className: "form-input texture-url", type: "text", id: id, "data-label": name, placeholder: "Enter URL", defaultValue: currentTexture[id] }, props)))));
+}
+function getTextureFields() {
+    return Array.from(document.getElementsByClassName("texture-url")).map(elt => elt.id);
+}
+function checkTextureFile(file) {
+    const elt = document.getElementById(file);
+    const url = elt.value;
+    const name = elt.getAttribute("data-label");
+    // The logic below is copied from global-texturePackPicker.js
+    return new Promise((resolve, reject) => {
+        if (!url) {
+            return resolve();
+        }
+        const img = new Image();
+        img.onload = () => {
+            return elt.hasAttribute("imagewidth") && img.width !== +elt.getAttribute("imagewidth")
+                ? reject(`${name}: width (${img.width}) should be ${elt.getAttribute("imagewidth")}.`)
+                : elt.hasAttribute("imagewidthatleast") && img.width < +elt.getAttribute("imagewidthatleast")
+                    ? reject(`${name}: width (${img.width}) should be at least ${elt.getAttribute("imagewidthatleast")}.`)
+                    : elt.hasAttribute("imagewidthmultipleof") && img.width % +elt.getAttribute("imagewidthmultipleof") !== 0
+                        ? reject(`${name}: width (${img.width}) should be a multiple of ${elt.getAttribute("imagewidthmultipleof")}.`)
+                        : elt.hasAttribute("imageheight") && img.height !== +elt.getAttribute("imageheight")
+                            ? reject(`${name}: height (${img.height}) should be ${elt.getAttribute("imageheight")}.`)
+                            : resolve();
+        };
+        img.onerror = () => {
+            return reject(`${name}: URL cannot be loaded.`);
+        };
+        img.src = url;
+    });
+}
+function checkCustomTextures(okHandler, errorHandler) {
+    const each = (promise, file) => {
+        return promise
+            .then(_ => checkTextureFile(file))
+            .catch(reason => { throw reason; });
+    };
+    const files = getTextureFields();
+    const chain = files.reduce(each, Promise.resolve());
+    chain.then(okHandler).catch(errorHandler);
+}
+function saveCustomTextures() {
+    const files = getTextureFields();
+    currentTexture = { name: 'custom' };
+    files.forEach(field => currentTexture[field] = document.getElementById(field).value);
+    setTextureCookie();
 }
 
 
