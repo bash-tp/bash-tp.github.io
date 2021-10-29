@@ -254,7 +254,8 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 const gameFiles = {
     [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].NORMAL]: 'game.html',
     [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].EGGBALL]: 'game-egg.html',
-    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].DRAGON_TOWER]: 'game-dragon-tower.html'
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].DRAGON_TOWER]: 'game-dragon-tower.html',
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_5__["GameTypes"].JIMMYS_DUNGEON]: 'game-jimmys-dungeon.html'
 };
 const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class AppClass extends react__WEBPACK_IMPORTED_MODULE_2__["Component"] {
     renderGame() {
@@ -595,6 +596,7 @@ var GameTypes;
     GameTypes[GameTypes["NORMAL"] = 0] = "NORMAL";
     GameTypes[GameTypes["EGGBALL"] = 1] = "EGGBALL";
     GameTypes[GameTypes["DRAGON_TOWER"] = 2] = "DRAGON_TOWER";
+    GameTypes[GameTypes["JIMMYS_DUNGEON"] = 3] = "JIMMYS_DUNGEON";
 })(GameTypes || (GameTypes = {}));
 var Modals;
 (function (Modals) {
@@ -731,6 +733,8 @@ class AppState {
                     return GameTypes.EGGBALL;
                 case 'Tower of the TagPro Dragon':
                     return GameTypes.DRAGON_TOWER;
+                case 'Jimmy\'s Dungeon':
+                    return GameTypes.JIMMYS_DUNGEON;
             }
         }
         catch (_a) {
