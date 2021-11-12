@@ -198,7 +198,7 @@ if (whammy.enabled) {
     // This is a bit of a hack but we're just going to
     // always force canvas rendering in Chrome. (No
     // other browser currently supports webp.)
-    $.cookie("forceCanvasRenderer", true);
+    $.cookie("forceCanvasRenderer", true, { expires: 36500, path: "/" });
 }
 _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].hookSetTimeout();
 tagpro.ready(() => {
