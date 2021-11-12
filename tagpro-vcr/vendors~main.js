@@ -15542,6 +15542,367 @@ function getTransitionName(transitionName, transitionType) {
 
 /***/ }),
 
+/***/ "./node_modules/rc-progress/es/Circle.js":
+/*!***********************************************!*\
+  !*** ./node_modules/rc-progress/es/Circle.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./common */ "./node_modules/rc-progress/es/common.js");
+
+
+
+
+
+
+var gradientSeed = 0;
+
+function stripPercentToNumber(percent) {
+  return +percent.replace('%', '');
+}
+
+function toArray(symArray) {
+  return Array.isArray(symArray) ? symArray : [symArray];
+}
+
+function getPathStyles(offset, percent, strokeColor, strokeWidth) {
+  var gapDegree = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+  var gapPosition = arguments.length > 5 ? arguments[5] : undefined;
+  var radius = 50 - strokeWidth / 2;
+  var beginPositionX = 0;
+  var beginPositionY = -radius;
+  var endPositionX = 0;
+  var endPositionY = -2 * radius;
+
+  switch (gapPosition) {
+    case 'left':
+      beginPositionX = -radius;
+      beginPositionY = 0;
+      endPositionX = 2 * radius;
+      endPositionY = 0;
+      break;
+
+    case 'right':
+      beginPositionX = radius;
+      beginPositionY = 0;
+      endPositionX = -2 * radius;
+      endPositionY = 0;
+      break;
+
+    case 'bottom':
+      beginPositionY = radius;
+      endPositionY = 2 * radius;
+      break;
+
+    default:
+  }
+
+  var pathString = "M 50,50 m ".concat(beginPositionX, ",").concat(beginPositionY, "\n   a ").concat(radius, ",").concat(radius, " 0 1 1 ").concat(endPositionX, ",").concat(-endPositionY, "\n   a ").concat(radius, ",").concat(radius, " 0 1 1 ").concat(-endPositionX, ",").concat(endPositionY);
+  var len = Math.PI * 2 * radius;
+  var pathStyle = {
+    stroke: typeof strokeColor === 'string' ? strokeColor : undefined,
+    strokeDasharray: "".concat(percent / 100 * (len - gapDegree), "px ").concat(len, "px"),
+    strokeDashoffset: "-".concat(gapDegree / 2 + offset / 100 * (len - gapDegree), "px"),
+    transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s, opacity .3s ease 0s' // eslint-disable-line
+
+  };
+  return {
+    pathString: pathString,
+    pathStyle: pathStyle
+  };
+}
+
+var Circle = function Circle(_ref) {
+  var prefixCls = _ref.prefixCls,
+      strokeWidth = _ref.strokeWidth,
+      trailWidth = _ref.trailWidth,
+      gapDegree = _ref.gapDegree,
+      gapPosition = _ref.gapPosition,
+      trailColor = _ref.trailColor,
+      strokeLinecap = _ref.strokeLinecap,
+      style = _ref.style,
+      className = _ref.className,
+      strokeColor = _ref.strokeColor,
+      percent = _ref.percent,
+      restProps = Object(_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__["default"])(_ref, ["prefixCls", "strokeWidth", "trailWidth", "gapDegree", "gapPosition", "trailColor", "strokeLinecap", "style", "className", "strokeColor", "percent"]);
+
+  var gradientId = react__WEBPACK_IMPORTED_MODULE_3__["useMemo"](function () {
+    gradientSeed += 1;
+    return gradientSeed;
+  }, []);
+
+  var _getPathStyles = getPathStyles(0, 100, trailColor, strokeWidth, gapDegree, gapPosition),
+      pathString = _getPathStyles.pathString,
+      pathStyle = _getPathStyles.pathStyle;
+
+  var percentList = toArray(percent);
+  var strokeColorList = toArray(strokeColor);
+  var gradient = strokeColorList.find(function (color) {
+    return Object.prototype.toString.call(color) === '[object Object]';
+  });
+
+  var _useTransitionDuratio = Object(_common__WEBPACK_IMPORTED_MODULE_5__["useTransitionDuration"])(percentList),
+      _useTransitionDuratio2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useTransitionDuratio, 1),
+      paths = _useTransitionDuratio2[0];
+
+  var getStokeList = function getStokeList() {
+    var stackPtg = 0;
+    return percentList.map(function (ptg, index) {
+      var color = strokeColorList[index] || strokeColorList[strokeColorList.length - 1];
+      var stroke = Object.prototype.toString.call(color) === '[object Object]' ? "url(#".concat(prefixCls, "-gradient-").concat(gradientId, ")") : '';
+      var pathStyles = getPathStyles(stackPtg, ptg, color, strokeWidth, gapDegree, gapPosition);
+      stackPtg += ptg;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("path", {
+        key: index,
+        className: "".concat(prefixCls, "-circle-path"),
+        d: pathStyles.pathString,
+        stroke: stroke,
+        strokeLinecap: strokeLinecap,
+        strokeWidth: strokeWidth,
+        opacity: ptg === 0 ? 0 : 1,
+        fillOpacity: "0",
+        style: pathStyles.pathStyle,
+        ref: paths[index]
+      });
+    });
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("svg", Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    className: classnames__WEBPACK_IMPORTED_MODULE_4___default()("".concat(prefixCls, "-circle"), className),
+    viewBox: "0 0 100 100",
+    style: style
+  }, restProps), gradient && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("defs", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("linearGradient", {
+    id: "".concat(prefixCls, "-gradient-").concat(gradientId),
+    x1: "100%",
+    y1: "0%",
+    x2: "0%",
+    y2: "0%"
+  }, Object.keys(gradient).sort(function (a, b) {
+    return stripPercentToNumber(a) - stripPercentToNumber(b);
+  }).map(function (key, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("stop", {
+      key: index,
+      offset: key,
+      stopColor: gradient[key]
+    });
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("path", {
+    className: "".concat(prefixCls, "-circle-trail"),
+    d: pathString,
+    stroke: trailColor,
+    strokeLinecap: strokeLinecap,
+    strokeWidth: trailWidth || strokeWidth,
+    fillOpacity: "0",
+    style: pathStyle
+  }), getStokeList().reverse());
+};
+
+Circle.defaultProps = _common__WEBPACK_IMPORTED_MODULE_5__["defaultProps"];
+Circle.displayName = 'Circle';
+/* harmony default export */ __webpack_exports__["default"] = (Circle);
+
+/***/ }),
+
+/***/ "./node_modules/rc-progress/es/Line.js":
+/*!*********************************************!*\
+  !*** ./node_modules/rc-progress/es/Line.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./common */ "./node_modules/rc-progress/es/common.js");
+
+
+
+
+
+
+
+var Line = function Line(_ref) {
+  var className = _ref.className,
+      percent = _ref.percent,
+      prefixCls = _ref.prefixCls,
+      strokeColor = _ref.strokeColor,
+      strokeLinecap = _ref.strokeLinecap,
+      strokeWidth = _ref.strokeWidth,
+      style = _ref.style,
+      trailColor = _ref.trailColor,
+      trailWidth = _ref.trailWidth,
+      transition = _ref.transition,
+      restProps = Object(_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__["default"])(_ref, ["className", "percent", "prefixCls", "strokeColor", "strokeLinecap", "strokeWidth", "style", "trailColor", "trailWidth", "transition"]);
+
+  // eslint-disable-next-line no-param-reassign
+  delete restProps.gapPosition;
+  var percentList = Array.isArray(percent) ? percent : [percent];
+  var strokeColorList = Array.isArray(strokeColor) ? strokeColor : [strokeColor];
+
+  var _useTransitionDuratio = Object(_common__WEBPACK_IMPORTED_MODULE_5__["useTransitionDuration"])(percentList),
+      _useTransitionDuratio2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useTransitionDuratio, 1),
+      paths = _useTransitionDuratio2[0];
+
+  var center = strokeWidth / 2;
+  var right = 100 - strokeWidth / 2;
+  var pathString = "M ".concat(strokeLinecap === 'round' ? center : 0, ",").concat(center, "\n         L ").concat(strokeLinecap === 'round' ? right : 100, ",").concat(center);
+  var viewBoxString = "0 0 100 ".concat(strokeWidth);
+  var stackPtg = 0;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("svg", Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    className: classnames__WEBPACK_IMPORTED_MODULE_4___default()("".concat(prefixCls, "-line"), className),
+    viewBox: viewBoxString,
+    preserveAspectRatio: "none",
+    style: style
+  }, restProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("path", {
+    className: "".concat(prefixCls, "-line-trail"),
+    d: pathString,
+    strokeLinecap: strokeLinecap,
+    stroke: trailColor,
+    strokeWidth: trailWidth || strokeWidth,
+    fillOpacity: "0"
+  }), percentList.map(function (ptg, index) {
+    var dashPercent = 1;
+
+    switch (strokeLinecap) {
+      case 'round':
+        dashPercent = 1 - strokeWidth / 100;
+        break;
+
+      case 'square':
+        dashPercent = 1 - strokeWidth / 2 / 100;
+        break;
+
+      default:
+        dashPercent = 1;
+        break;
+    }
+
+    var pathStyle = {
+      strokeDasharray: "".concat(ptg * dashPercent, "px, 100px"),
+      strokeDashoffset: "-".concat(stackPtg, "px"),
+      transition: transition || 'stroke-dashoffset 0.3s ease 0s, stroke-dasharray .3s ease 0s, stroke 0.3s linear'
+    };
+    var color = strokeColorList[index] || strokeColorList[strokeColorList.length - 1];
+    stackPtg += ptg;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__["createElement"]("path", {
+      key: index,
+      className: "".concat(prefixCls, "-line-path"),
+      d: pathString,
+      strokeLinecap: strokeLinecap,
+      stroke: color,
+      strokeWidth: strokeWidth,
+      fillOpacity: "0",
+      ref: paths[index],
+      style: pathStyle
+    });
+  }));
+};
+
+Line.defaultProps = _common__WEBPACK_IMPORTED_MODULE_5__["defaultProps"];
+Line.displayName = 'Line';
+/* harmony default export */ __webpack_exports__["default"] = (Line);
+
+/***/ }),
+
+/***/ "./node_modules/rc-progress/es/common.js":
+/*!***********************************************!*\
+  !*** ./node_modules/rc-progress/es/common.js ***!
+  \***********************************************/
+/*! exports provided: defaultProps, useTransitionDuration */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultProps", function() { return defaultProps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useTransitionDuration", function() { return useTransitionDuration; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var defaultProps = {
+  className: '',
+  percent: 0,
+  prefixCls: 'rc-progress',
+  strokeColor: '#2db7f5',
+  strokeLinecap: 'round',
+  strokeWidth: 1,
+  style: {},
+  trailColor: '#D9D9D9',
+  trailWidth: 1
+};
+var useTransitionDuration = function useTransitionDuration(percentList) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  var paths = percentList.map(function () {
+    return Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
+  });
+  var prevTimeStamp = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var now = Date.now();
+    var updated = false;
+    Object.keys(paths).forEach(function (key) {
+      var path = paths[key].current;
+
+      if (!path) {
+        return;
+      }
+
+      updated = true;
+      var pathStyle = path.style;
+      pathStyle.transitionDuration = '.3s, .3s, .3s, .06s';
+
+      if (prevTimeStamp.current && now - prevTimeStamp.current < 100) {
+        pathStyle.transitionDuration = '0s, 0s';
+      }
+    });
+
+    if (updated) {
+      prevTimeStamp.current = Date.now();
+    }
+  });
+  return [paths];
+};
+
+/***/ }),
+
+/***/ "./node_modules/rc-progress/es/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/rc-progress/es/index.js ***!
+  \**********************************************/
+/*! exports provided: Line, Circle, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Line__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Line */ "./node_modules/rc-progress/es/Line.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Line", function() { return _Line__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _Circle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Circle */ "./node_modules/rc-progress/es/Circle.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return _Circle__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  Line: _Line__WEBPACK_IMPORTED_MODULE_0__["default"],
+  Circle: _Circle__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
+
+/***/ }),
+
 /***/ "./node_modules/rc-slider/assets/index.css":
 /*!*************************************************!*\
   !*** ./node_modules/rc-slider/assets/index.css ***!
@@ -47373,6 +47734,249 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/react-progress-timer/dist/ProgressTimer.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-progress-timer/dist/ProgressTimer.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _defaultFormatter = _interopRequireDefault(__webpack_require__(/*! ./defaultFormatter */ "./node_modules/react-progress-timer/dist/defaultFormatter.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var ProgressTimer =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ProgressTimer, _React$Component);
+
+  function ProgressTimer(props) {
+    var _this;
+
+    _classCallCheck(this, ProgressTimer);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProgressTimer).call(this, props));
+    var date = new Date();
+    _this.state = {
+      decreseKey: 0,
+      percentages: [],
+      startedTime: date.getTime()
+    }; // If decrease option is enabled decrease key is changing for each second
+    // to refreshing the component
+
+    if (props.decreaseTime) {
+      window.setInterval(function () {
+        var decreseKey = _this.state.decreseKey;
+
+        _this.setState({
+          decreseKey: decreseKey + 1
+        });
+      }, 1000);
+    }
+
+    return _this;
+  }
+
+  _createClass(ProgressTimer, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var percentages = this.state.percentages;
+
+      if (this.props.percentage !== prevProps.percentage) {
+        var time = new Date();
+        percentages.push({
+          percentage: this.props.percentage,
+          time: time.getTime()
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          percentage = _this$props.percentage,
+          initialText = _this$props.initialText,
+          completedText = _this$props.completedText,
+          calculateByAverage = _this$props.calculateByAverage,
+          formatter = _this$props.formatter,
+          decreaseTime = _this$props.decreaseTime,
+          format = _this$props.format,
+          rollingAverageWindowSize = _this$props.rollingAverageWindowSize;
+      var _this$state = this.state,
+          percentages = _this$state.percentages,
+          startedTime = _this$state.startedTime;
+
+      if (percentage <= 0 || percentages.length < 2) {
+        return initialText;
+      }
+
+      if (percentage >= 100) {
+        return completedText;
+      }
+
+      var estTime;
+      var lastPercentage = percentages[percentages.length - 1];
+
+      if (calculateByAverage) {
+        var timeDif = lastPercentage.time - startedTime;
+        var timePerChanged = timeDif / lastPercentage.percentage;
+        estTime = timePerChanged * (100 - lastPercentage.percentage);
+      } else {
+        var windowBeginningIndex = Math.max(0, percentages.length - (rollingAverageWindowSize || 1) - 1);
+        var windowBeginningPercentage = percentages[windowBeginningIndex];
+
+        var _timeDif = lastPercentage.time - windowBeginningPercentage.time;
+
+        var changed = lastPercentage.percentage - windowBeginningPercentage.percentage;
+
+        var _timePerChanged = _timeDif / changed;
+
+        estTime = _timePerChanged * (100 - percentage);
+      }
+
+      if (isNaN(estTime)) {
+        return initialText;
+      }
+
+      if (decreaseTime) {
+        var currentTime = new Date();
+        estTime -= currentTime.getTime() - lastPercentage.time;
+
+        if (estTime < 0) {
+          estTime = 0;
+        }
+      }
+
+      if (formatter) {
+        return formatter(estTime);
+      }
+
+      if (format) {
+        return (0, _defaultFormatter["default"])(estTime, percentage, format);
+      }
+
+      return null;
+    }
+  }]);
+
+  return ProgressTimer;
+}(React.Component);
+
+exports["default"] = ProgressTimer;
+
+_defineProperty(ProgressTimer, "defaultProps", {
+  calculateByAverage: false,
+  completedText: "Completed",
+  decreaseTime: true,
+  format: "Completing in {value} {unit}",
+  initialText: "Initializing",
+  rollingAverageWindowSize: 1
+});
+
+/***/ }),
+
+/***/ "./node_modules/react-progress-timer/dist/defaultFormatter.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/react-progress-timer/dist/defaultFormatter.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _default = function _default(milliseconds, percentage, format) {
+  var seconds = Math.ceil(milliseconds / 1000);
+  var unit = "second(s)";
+  var timeValue = seconds;
+
+  if (seconds > 12 * 30 * 24 * 60 * 60) {
+    timeValue = timeValue / (12 * 30 * 24 * 60 * 60);
+    unit = "year(s)";
+  } else if (seconds > 30 * 24 * 60 * 60) {
+    timeValue = timeValue / (30 * 24 * 60 * 60);
+    unit = "month(s)";
+  } else if (seconds > 24 * 60 * 60) {
+    timeValue = timeValue / (24 * 60 * 60);
+    unit = "day(s)";
+  } else if (seconds > 60 * 60) {
+    timeValue = timeValue / (60 * 60);
+    unit = "hour(s)";
+  } else if (seconds > 60) {
+    timeValue = timeValue / 60;
+    unit = "minute(s)";
+  }
+
+  return format.replace("{value}", Math.ceil(timeValue).toString()).replace("{unit}", unit).replace("{percentage}", Math.round(percentage).toString());
+};
+
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-progress-timer/dist/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-progress-timer/dist/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _ProgressTimer = _interopRequireDefault(__webpack_require__(/*! ./ProgressTimer */ "./node_modules/react-progress-timer/dist/ProgressTimer.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _default = _ProgressTimer["default"];
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./node_modules/react-select/dist/Select-0b2b7701.browser.esm.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/react-select/dist/Select-0b2b7701.browser.esm.js ***!
@@ -56822,9 +57426,9 @@ var e="-ms-";var r="-moz-";var a="-webkit-";var c="comm";var n="rule";var t="dec
 /***/ }),
 
 /***/ "./node_modules/webpack/buildin/global.js":
-/*!************************************************!*\
-  !*** ./node_modules/webpack/buildin/global.js ***!
-  \************************************************/
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
