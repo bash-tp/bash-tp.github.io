@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          TagPro VCR
 // @description   Record TagPro socket data
-// @version       1.1.0
+// @version       1.1.1
 // @author        Kera, bash#
 // @icon          https://bash-tp.github.io/tagpro-vcr/images/vhs.png
 // @namespace     https://github.com/bash-tp/
@@ -10,8 +10,8 @@
 // @match         *://*.koalabeast.com/*
 // @match         *://*.jukejuice.com/*
 // @match         *://*.newcompte.fr/*
-// @require       https://unpkg.com/idb/build/iife/index-min.js
-// @require       https://unpkg.com/penpal/dist/penpal.min.js
+// @require       https://unpkg.com/idb@7/build/umd.js
+// @require       https://unpkg.com/penpal@6/dist/penpal.min.js
 // ==/UserScript==
 
 (function (tagpro, idb, tagproConfig, Penpal) {
@@ -248,7 +248,7 @@
 	var css = "ul.vcr-list {\n\tlist-style: disc outside;\n\tmargin-left: 2rem;\n}\n\n.vcr-button {\n\tfont-size: 1.8em;\n\tborder: none;\n\tbox-shadow: none;\n\tbackground-color: #ffff00;\n\tmargin-bottom: inherit;\n\tfilter: invert(27%) sepia(48%) saturate(3292%) hue-rotate(183deg) brightness(99%) contrast(98%);\n}\n\n.vcr-button:hover, .vcr-button:focus, .vcr-button:active {\n\tbackground-color: #ffff00;\n\topacity: 0.5;\n}\n\n.vcr-button-play, .vcr-button-play:hover, .vcr-button-play:focus, .vcr-button-play:active {\n\tbackground-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300' style='enable-background:new 0 0 300 300' xml:space='preserve'%3E%3Cpath d='M300 0H0v300h300V0zm-94.2 158.3-86.6 50c-1.3.8-2.8 1.1-4.3 1.1-4.7 0-8.5-3.8-8.5-8.5V101c0-3.1 1.6-5.9 4.3-7.4 2.6-1.5 5.9-1.5 8.6 0l86.6 50c2.6 1.5 4.3 4.3 4.3 7.4-.1 2.9-1.7 5.7-4.4 7.3z'/%3E%3C/svg%3E\");\n}\n\n.vcr-button-download, .vcr-button-download:hover, .vcr-button-download:focus, .vcr-button-download:active {\n\tbackground-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300' style='enable-background:new 0 0 300 300' xml:space='preserve'%3E%3Cpath d='M0 0v300h300V0H0zm126.4 133h12.7V93.5s-.5-1.9 2.4-1.9h17.8c2.1 0 2 1.6 2 1.6v39H173c4.5 0 1.1 3.4 1.1 3.4s-19.1 25.4-21.8 28c-1.9 1.9-3.8-.2-3.8-.2L126 136.2c.1 0-3.3-3.2.4-3.2zm80.2 67.6c0 4.3-3.5 7.8-7.9 7.8h-97.4c-4.4 0-7.9-3.5-7.9-7.8V166h15.7v26.7h81.7V166h15.7v34.6z'/%3E%3C/svg%3E\");\n}\n\n.vcr-hidden {\n\tdisplay: none;\n}\n\n.vcr-select {\n\tbackground: #212121;\n\tborder-color: #5f5f5f;\n}\n\n.vcr-mask {\n\tposition: fixed;\n\tleft: 50%;\n\ttop: 50%;\n\theight: 100px;\n\twidth: 100px;\n\tmargin: auto;\n\ttop: 0;\n\tleft: 0;\n\tbottom: 0;\n\tright: 0;\n}\n\n.vcr-mask:before {\n\tcontent: \"\";\n\tposition: fixed;\n\ttop: 0;\n\tleft: 0;\n\tbottom: 0;\n\tright: 0;\n\topacity: 0.8;\n\tbackground-color: #000000;\n}\n\n.vcr-mask-inside {\n\tposition: relative;\n\twidth: 100%;\n\theight: 100%;\n}\n\n.vcr-mask-inside::after {\n\tcontent: \"\";\n\tposition: absolute;\n\tborder-width: 3px;\n\tborder-style: solid;\n\tborder-color: transparent rgb(255, 255, 255) rgb(255, 255, 255);\n\tborder-radius: 50%;\n\twidth: 24px;\n\theight: 24px;\n\ttop: calc(50% - 12px);\n\tleft: calc(50% - 12px);\n\tanimation: 2s linear 0s normal none infinite running vcr-spin;\n\t/* filter: drop-shadow(0 0 2 rgba(0, 0, 0, 0.33)); */\n}\n\n@keyframes vcr-spin {\n\tfrom {\n\t\ttransform: rotate(0deg);\n\t}\n\tto {\n\t\ttransform: rotate(359deg);\n\t}\n}\n";
 	n(css,{});
 
-	const version = '1.1.0';
+	const version = '1.1.1';
 	const vcrUrl = 'https://bash-tp.github.io/tagpro-vcr/';
 	class VcrWindow {
 	    constructor(settings, storage) {
@@ -291,6 +291,11 @@
 				Installed now: ${version}<br />
 				Previous version: ${previous}
 			</p>
+
+			<p><u>Version 1.1.1</u></p>
+			<ul class="bullet-list">
+				<li>Update dependencies due to upstream library changes.</li>
+			</ul>
 
 			<p><u>Version 1.1.0</u></p>
 			<ul class="bullet-list">
