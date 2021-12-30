@@ -205,8 +205,6 @@ tagpro.ready(() => {
     $('#volumeSlider').blur();
     tagproConfig.serverHost = "#";
     tagproConfig.musicHost = "#";
-    tagpro.spectator = true;
-    tagpro.ui.spectatorInfo = () => { };
     save.performanceInfo = tagpro.ui.performanceInfo;
     tagpro.ui.performanceInfo = (e, t, n, r) => {
         tagpro.ping.avg = "N/A";
@@ -244,8 +242,14 @@ tagpro.ready(() => {
         tagpro.settings.ui.performanceInfo = !$.cookie("vcrHidePerformanceInfo");
         tagpro.settings.ui.teamNames = !!$.cookie("vcrHideTeamNames") ? "never" : "always";
     };
-    tagpro.socket.on("connect", doSettings);
     tagpro.socket.on("settings", doSettings);
+    tagpro.socket.on("connect", e => {
+        doSettings();
+        if (!e.isSpectator) {
+            tagpro.spectator = true;
+            tagpro.ui.spectatorInfo = () => { };
+        }
+    });
     tagpro.socket.on("map", e => {
         save.map = JSON.parse(JSON.stringify(e.tiles));
     });

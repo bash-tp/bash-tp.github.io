@@ -477,7 +477,7 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
             react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('input-group input-inline', { 'has-icon-right': !!appState.recordingURL }) },
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { className: "form-input", type: "text", value: appState.recordingURL, onChange: appState.handleUrlChange, placeholder: "Fetch from URL (http://...)" }),
                 appState.recordingURL && react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("i", { className: fetchClasses })),
-            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { id: "file", type: "file", accept: ".ndjson,.jsonl", onChange: appState.handleFileSelect }),
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("input", { id: "file", type: "file", accept: ".ndjson,.ndjson.gz,.jsonl,.jsonl.gz", onChange: appState.handleFileSelect }),
             ' ',
             this.renderStartButton()));
     }
@@ -627,7 +627,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Modals", function() { return Modals; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppState", function() { return AppState; });
 /* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
-/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/EventedChannel */ "./src/utils/EventedChannel.ts");
+/* harmony import */ var pako__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pako */ "./node_modules/pako/dist/pako.esm.mjs");
+/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/EventedChannel */ "./src/utils/EventedChannel.ts");
+
 
 
 const fetchPatterns = [
@@ -684,7 +686,7 @@ class AppState {
         this.overtimePacket = undefined;
         this.initialState = 0;
         Object(mobx__WEBPACK_IMPORTED_MODULE_0__["makeAutoObservable"])(this, { channel: false, packets: false }, { autoBind: true });
-        const channel = (this.channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__["default"]('vcr'));
+        const channel = (this.channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_2__["default"]('vcr'));
         channel.on('request-recording', this.handleRequestRecording);
         channel.on('show-controls', this.handleShowControls);
         channel.on('time-sync', this.handleTimeSync);
@@ -702,7 +704,7 @@ class AppState {
                     this.recording = reader.result;
                 });
             });
-            reader.readAsText(file);
+            reader.readAsBinaryString(file);
         });
         Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingURL, url => {
             if (!this.recordingURL) {
@@ -872,7 +874,12 @@ class AppState {
         this.settings = false;
         let failed = false;
         try {
-            this.parseRecording(this.recording);
+            let recording = this.recording;
+            if (this.recordingName.endsWith('.gz')) {
+                const charData = recording.split('').map(c => c.charCodeAt(0));
+                recording = pako__WEBPACK_IMPORTED_MODULE_1__["default"].ungzip(new Uint8Array(charData), { to: 'string' });
+            }
+            this.parseRecording(recording);
         }
         catch (_a) {
             failed = true;
@@ -956,13 +963,15 @@ class AppState {
         const endIndex = packets.findIndex(p => p[1] === 'end');
         const endPacket = packets[endIndex] || packets[packets.length - 1];
         const duration = endPacket[0];
+        const isSpectator = !!packets.findIndex(p => p[1] === 'spectator');
         const connect = packets.find(p => p[1] === 'connect');
         if (connect) {
             connect[2] || (connect[2] = {});
             connect[2].duration = duration;
+            connect[2].isSpectator = isSpectator;
         }
         else {
-            packets.splice(1, 0, [0, 'connect', { 'duration': duration }]);
+            packets.splice(1, 0, [0, 'connect', { 'duration': duration, 'isSpectator': isSpectator }]);
         }
         this.firstTimePacket = packets.find(p => p[1] === 'time');
         this.startPacket = packets.find(p => p[1] === 'time' && p[2].state === 1 /* Active */);
