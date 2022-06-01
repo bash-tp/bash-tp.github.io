@@ -260,7 +260,8 @@ const gameFiles = {
     [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].NORMAL]: 'game.html',
     [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].EGGBALL]: 'game-egg.html',
     [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].DRAGON_TOWER]: 'game-dragon-tower.html',
-    [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].JIMMYS_DUNGEON]: 'game-jimmys-dungeon.html'
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].JIMMYS_DUNGEON]: 'game-jimmys-dungeon.html',
+    [_stores_AppState__WEBPACK_IMPORTED_MODULE_7__["GameTypes"].PIRATES]: 'game-pirates.html'
 };
 const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class AppClass extends react__WEBPACK_IMPORTED_MODULE_2__["Component"] {
     renderGame() {
@@ -302,7 +303,7 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                         react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
                         _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_8__["renderProfileCheckbox"]('forceCanvasRenderer', 'Enable WebGL Rendering', false),
                         ' ',
-                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn btn-primary btn-sm btn-action btn-question circle tooltip large-tooltip", "data-tooltip": "Note to Chrome users: WebGL rendering will always be disabled. This is required to support video capture, which is only available in Chrome." }, "?"),
+                        react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn btn-primary btn-sm btn-action btn-question circle tooltip large-tooltip", "data-tooltip": "Note to Chrome users: To enable video capture, turn this checkbox off. Playback performance might be worse." }, "?"),
                         react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null),
                         _utils_ProfileSettings__WEBPACK_IMPORTED_MODULE_8__["renderProfileCheckbox"]('disableViewportScaling', 'Enable Viewport Scaling', true),
                         react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("br", null)),
@@ -398,7 +399,8 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                         react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("code", null, "-"),
                         " to zoom in/out etc. (see ",
                         react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("a", { href: "https://www.reddit.com/r/TagPro/wiki/gameplay#wiki_spectator" }, "wiki"),
-                        ").")),
+                        ")."),
+                    react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("li", null, "Video capture (experimental!) is available only in Chrome, and only when WebGL Rendering is disabled. To allow video capture in Chrome, click on More Settings and turn off Video Settings > Enable WebGL Rendering. Playback performance might be worse.")),
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("h6", null, "Texture Pack Selection"),
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("p", null,
                     "See ",
@@ -452,16 +454,19 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                 disabled: appState.started || !appState.recording
             }), onClick: appState.handleStart }, "Play"));
     }
-    renderCaptureButtonChrome() {
+    renderCaptureButtonEnabled() {
         const { appState } = this.props;
         return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", null,
             react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn space-left capture-outer", type: "button", "data-state": appState.capturing ? "capture-active" : "capture-inactive", title: appState.capturing ? "Stop capturing and save video" : "Capture video file", onClick: appState.handleCapture },
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "capture-inner" })),
             react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", { className: "capture-timer" }, appState.capturing ? timeFormat(performance.now() - appState.captureStarted) : "")));
     }
-    renderCaptureButtonNonChrome() {
+    renderCaptureButtonDisabled(couldCapture) {
+        const tooltip = couldCapture ?
+            "Video capture is disabled" :
+            "Video capture is only available in Chrome";
         return (react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", null,
-            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn space-left capture-outer tooltip tooltip-right", type: "button", "data-state": "capture-inactive", "data-tooltip": "Video capture is only available in Chrome", disabled: true },
+            react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn space-left capture-outer tooltip tooltip-right", type: "button", "data-state": "capture-inactive", "data-tooltip": tooltip, disabled: true },
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("div", { className: "capture-inner" }))));
     }
     renderNavbarStopped() {
@@ -515,7 +520,7 @@ const App = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(class Ap
                 ' ',
                 react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("button", { className: "btn", type: "button", "data-state": "stop", title: "Stop playback", onClick: appState.handleStop }),
                 ' ',
-                appState.canCapture ? this.renderCaptureButtonChrome() : this.renderCaptureButtonNonChrome())));
+                appState.canCapture ? this.renderCaptureButtonEnabled() : this.renderCaptureButtonDisabled(appState.couldCapture))));
     }
     render() {
         const { appState } = this.props;
@@ -642,6 +647,7 @@ var GameTypes;
     GameTypes[GameTypes["EGGBALL"] = 1] = "EGGBALL";
     GameTypes[GameTypes["DRAGON_TOWER"] = 2] = "DRAGON_TOWER";
     GameTypes[GameTypes["JIMMYS_DUNGEON"] = 3] = "JIMMYS_DUNGEON";
+    GameTypes[GameTypes["PIRATES"] = 4] = "PIRATES";
 })(GameTypes || (GameTypes = {}));
 var Modals;
 (function (Modals) {
@@ -668,6 +674,7 @@ class AppState {
         this.fetching = false;
         this.urlIsValid = undefined;
         this.canCapture = false;
+        this.couldCapture = false;
         this.started = false;
         this.playing = false;
         this.paused = false;
@@ -786,6 +793,8 @@ class AppState {
                     return GameTypes.DRAGON_TOWER;
                 case 'Jimmy\'s Dungeon':
                     return GameTypes.JIMMYS_DUNGEON;
+                case 'Pirates of the Caribballan: The Legend of Juke Sparrowkeys':
+                    return GameTypes.PIRATES;
             }
         }
         catch (_a) {
@@ -828,6 +837,7 @@ class AppState {
     handleShowControls(data) {
         this.playing = true;
         this.canCapture = data.canCapture;
+        this.couldCapture = data.couldCapture;
     }
     handleTimeSync(data) {
         const state = data.state;

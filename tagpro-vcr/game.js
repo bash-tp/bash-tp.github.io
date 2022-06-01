@@ -164,10 +164,12 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_BackgroundPlayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/BackgroundPlayer */ "./src/utils/BackgroundPlayer.ts");
-/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/EventedChannel */ "./src/utils/EventedChannel.ts");
-/* harmony import */ var _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/FakeSocket */ "./src/utils/FakeSocket.ts");
-/* harmony import */ var _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/PauseableTimeout */ "./src/utils/PauseableTimeout.ts");
+/* harmony import */ var detect_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! detect-browser */ "./node_modules/detect-browser/es/index.js");
+/* harmony import */ var _utils_BackgroundPlayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/BackgroundPlayer */ "./src/utils/BackgroundPlayer.ts");
+/* harmony import */ var _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/EventedChannel */ "./src/utils/EventedChannel.ts");
+/* harmony import */ var _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/FakeSocket */ "./src/utils/FakeSocket.ts");
+/* harmony import */ var _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/PauseableTimeout */ "./src/utils/PauseableTimeout.ts");
+
 
 
 
@@ -184,8 +186,14 @@ const save = {
     worldUpdate: null,
     map: null
 };
+const browser = Object(detect_browser__WEBPACK_IMPORTED_MODULE_0__["detect"])();
+const isChrome = browser && browser.name === "chrome";
+const hasWebp = viewport.toDataURL("image/webp").substring(0, 15) === "data:image/webp";
+const forceCanvas = $.cookie("forceCanvasRenderer") === "true";
+const couldCapture = isChrome && hasWebp;
+const canCapture = couldCapture && forceCanvas;
 const whammy = {
-    enabled: viewport.toDataURL('image/webp').substr(0, 15) === 'data:image/webp',
+    enabled: canCapture,
     minFrameDuration: 30,
     capturing: false,
     encoder: null,
@@ -193,14 +201,7 @@ const whammy = {
     docHTML: null,
     observer: null
 };
-if (whammy.enabled) {
-    // Canvas rendering is required to capture video.
-    // This is a bit of a hack but we're just going to
-    // always force canvas rendering in Chrome. (No
-    // other browser currently supports webp.)
-    $.cookie("forceCanvasRenderer", true, { expires: 36500, path: "/" });
-}
-_utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].hookSetTimeout();
+_utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].hookSetTimeout();
 tagpro.ready(() => {
     $('#volumeSlider').blur();
     tagproConfig.serverHost = "#";
@@ -255,7 +256,7 @@ tagpro.ready(() => {
     });
     tagpro.socket.on("vcr_time", e => {
         if (save.seeking) {
-            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].setBase(e.time);
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].setBase(e.time);
         }
     });
     tagpro.socket.on("vcr_end", e => {
@@ -264,13 +265,13 @@ tagpro.ready(() => {
     tagpro.socket.on("vcr_seek", e => {
         tagpro.sound = save.sound;
         save.seeking = false;
-        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].setBase(0);
-        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].shiftAll(e.to);
+        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].setBase(0);
+        _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].shiftAll(e.to);
     });
 });
 const io = {
     connect() {
-        const player = new _utils_BackgroundPlayer__WEBPACK_IMPORTED_MODULE_0__["default"]();
+        const player = new _utils_BackgroundPlayer__WEBPACK_IMPORTED_MODULE_1__["default"]();
         // NOTE: For testing
         // player.worker.on('packet', (ts, type, data) => console.log(ts, type, data));
         // player.worker.on('end', ev => console.log('End!'));
@@ -299,13 +300,13 @@ const io = {
                 player.emit('id', target);
             }
         };
-        const socket = new _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_2__["default"](player, onEmit);
-        const channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_1__["default"]('vcr');
+        const socket = new _utils_FakeSocket__WEBPACK_IMPORTED_MODULE_3__["default"](player, onEmit);
+        const channel = new _utils_EventedChannel__WEBPACK_IMPORTED_MODULE_2__["default"]('vcr');
         channel.emit('request-recording');
         channel.on('recording', data => {
             player.load(data);
             player.play();
-            channel.emit('show-controls', { canCapture: whammy.enabled });
+            channel.emit('show-controls', { canCapture, couldCapture });
             const timer = tagpro.ui.timer;
             tagpro.ui.timer = (...args) => {
                 let time;
@@ -322,7 +323,7 @@ const io = {
         let paused = false;
         const pause = () => {
             player.pause();
-            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].pauseAll();
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].pauseAll();
             paused = true;
             const now = Date.now();
             if (tagpro.gameEndsAt && !tagpro.overtimeStartedAt) {
@@ -346,7 +347,7 @@ const io = {
             else if (tagpro.overtimeStartedAt) {
                 tagpro.overtimeStartedAt = now - save.time;
             }
-            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].resumeAll();
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].resumeAll();
             player.play();
             paused = false;
         };
@@ -369,7 +370,7 @@ const io = {
             });
             // Fire any pending timers now
             // After the seek is complete, any new timers will be time-shifted
-            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_3__["default"].shiftAll(-1);
+            _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].shiftAll(-1);
             const update = tagpro.world.update;
             tagpro.world.update = (...args) => {
                 tagpro.renderer.layers.splats.removeChildren();
