@@ -232,6 +232,8 @@ tagpro.ready(() => {
             }
         });
     }
+    tagpro.createJoinerSocket = () => { };
+    tagpro.disconnectJoinerSocket = () => { };
     const doSettings = () => {
         tagpro.settings.ui.allChat = !$.cookie("vcrHideAllChat");
         tagpro.settings.ui.teamChat = !$.cookie("vcrHideTeamChat");
@@ -364,9 +366,7 @@ const io = {
             tagpro.overtimeStartedAt = null;
             playerIds().forEach(id => {
                 tagpro.players[id].lastSync = {};
-                if (id !== tagpro.playerId) {
-                    player.emit('playerLeft', id);
-                }
+                player.emit('playerLeft', id);
             });
             // Fire any pending timers now
             // After the seek is complete, any new timers will be time-shifted
