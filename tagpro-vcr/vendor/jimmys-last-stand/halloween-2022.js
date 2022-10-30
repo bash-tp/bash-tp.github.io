@@ -42,8 +42,21 @@ tagpro.loadAssets = () => {};
             "bling"
         );
 
+        let musicPlaying = false;
+
         setTimeout(function() {
             tagpro.musicPlayer.disable();
+
+            $("#soundMusic").click(function() {
+                if ($("#soundMusic").hasClass("off")) {
+                    $("#eventmusic").get(0).pause();
+                    musicPlaying = false;
+                }
+            });
+
+            tagpro.musicPlayer.refreshVolume = function() {
+                $("#eventmusic").get(0).volume = tagpro.volumeCoefficient;
+            };
         });
 
         tagpro.world.objectCreators["cannonBall"] = function(object, b2World) {
@@ -179,8 +192,6 @@ tagpro.loadAssets = () => {};
             stops[data.eyeId] = true;
         });
 
-        let musicPlaying = false;
-
         function turnDownMusic() {
             const music = $("#eventmusic").get(0);
             const volume = music.volume;
@@ -207,7 +218,7 @@ tagpro.loadAssets = () => {};
             if (jump.start) {
                 jump.scale = 1;
 
-                if (jump.final) {
+                if (jump.final && tagpro.music) {
                     turnDownMusic();
                 }
 
@@ -239,7 +250,7 @@ tagpro.loadAssets = () => {};
 
                             clearInterval(fallInterval);
 
-                            if (!musicPlaying) {
+                            if (tagpro.music && !musicPlaying) {
                                 var music = $("#eventmusic").get(0);
                                 music.volume = tagpro.volumeCoefficient;
                                 music.play();
