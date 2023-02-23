@@ -175,6 +175,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 __webpack_require__(/*! ./utils/whammy */ "./src/utils/whammy.js");
+tagproConfig.serverHost = "#";
+tagproConfig.musicHost = "#";
+tagproConfig.cdn = ".";
 const viewport = document.querySelector('#viewport');
 const save = {
     performanceInfo: null,
@@ -204,8 +207,6 @@ const whammy = {
 _utils_PauseableTimeout__WEBPACK_IMPORTED_MODULE_4__["default"].hookSetTimeout();
 tagpro.ready(() => {
     $('#volumeSlider').blur();
-    tagproConfig.serverHost = "#";
-    tagproConfig.musicHost = "#";
     save.performanceInfo = tagpro.ui.performanceInfo;
     tagpro.ui.performanceInfo = (e, t, n, r) => {
         tagpro.ping.avg = "N/A";
