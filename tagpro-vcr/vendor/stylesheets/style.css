@@ -1051,6 +1051,54 @@ body.modal-open {
     animation-timing-function: linear;
 }
 
+.flair.special-eventmaster {
+    background-position: -64px -176px;
+    -webkit-animation-name: shake-popper;
+    -webkit-animation-duration: 525ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: shake-popper;
+    -moz-animation-duration: 525ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: shake-popper;
+    animation-duration: 525ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.flair.special-flairz1 {
+    background-position: 0px -32px;
+    -webkit-animation-name: shake-popper;
+    -webkit-animation-duration: 450ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: shake-popper;
+    -moz-animation-duration: 450ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: shake-popper;
+    animation-duration: 450ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.flair.special-flairz2 {
+    background-position: -112px -32px;
+    -webkit-animation-name: shake-popper;
+    -webkit-animation-duration: 425ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: shake-popper;
+    -moz-animation-duration: 425ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: shake-popper;
+    animation-duration: 425ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
 @-moz-keyframes spin {
     from { -moz-transform: rotate(0deg); }
     to { -moz-transform: rotate(360deg); }
@@ -2858,6 +2906,57 @@ body.game-page {
 
 .activeThumbsDown {
     color: #c34a4a;
+}
+
+#mtc-app #displayedStatus {
+    text-align: center;
+}
+
+#mtc-app #spinner {
+    text-align: center;
+    margin-top: 5%;
+}
+
+#mtc-app .btn {
+    font-size: 12px;
+}
+
+#mtc-app .btn-default {
+    border: 1px solid #5f5f5f;
+}
+
+#mtc-app th {
+    position: sticky;
+    top: 0;
+    background-color: #8BC34A;
+}
+
+#mtc-app .name {
+    width: 20px;
+    word-wrap: break-word;
+}
+
+#mtc-app .download {
+    display: inline-block;
+    width: 3em;
+}
+
+#mtc-app .form-control[type="file"] {
+    display: inline;
+    width: auto;
+}
+
+#mtc-app .delete {
+    color: red;
+}
+
+#mtc-app .save {
+    position: sticky;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    background-color: #2b2b2b;
+    padding-top: 10px;
 }
 
 #roles-app .btn {

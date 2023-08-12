@@ -639,6 +639,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const fetchPatterns = [
+    new RegExp('^https://tagpro[^.]*\\.koalabeast.com/history/gameFile?'),
     new RegExp('^https://res\\.cloudinary\\.com/eggball/raw/upload/EggBall/[0-9]+.ndjson$'),
     new RegExp('^https://tpm\\.gg/Match/Replay/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
 ];
@@ -715,32 +716,28 @@ class AppState {
             });
             reader.readAsBinaryString(file);
         });
-        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingURL, url => {
+        Object(mobx__WEBPACK_IMPORTED_MODULE_0__["reaction"])(() => this.recordingURL, async (url) => {
             if (!this.recordingURL) {
                 return;
             }
             this.fetching = true;
-            fetch(url)
-                .then(r => {
-                if (!r.ok) {
+            try {
+                let r = await fetch(url, { credentials: "include" });
+                if (!r.ok)
                     throw r;
-                }
-                else {
-                    return r.text();
-                }
-            })
-                .then(text => {
+                let text = await r.text();
+                let name = r.headers.get("X-Replay-Filename");
                 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(() => {
                     this.recording = text;
-                    this.recordingName = url.replace(/[#?].*$/, '').replace(/^.*\//, '');
+                    this.recordingName = name || url.replace(/[#?].*$/, '').replace(/^.*\//, '');
                     this.fetching = false;
                     this.urlIsValid = true;
                     if (this.modal === Modals.FETCHING) {
                         this.modal = Modals.LAUNCH;
                     }
                 });
-            })
-                .catch(err => {
+            }
+            catch (err) {
                 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(() => {
                     this.recording = undefined;
                     this.fetching = false;
@@ -749,7 +746,7 @@ class AppState {
                         this.modal = Modals.FAILED;
                     }
                 });
-            });
+            }
         }, {
             delay: 1000
         });
